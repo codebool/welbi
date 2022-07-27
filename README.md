@@ -22,7 +22,7 @@ Stacks
 1. HTML5
 2. CSS
 3. JavaScript(ES6)
-4. Node.js (16.x.x)
+4. Node.js (16.16.0) & NPM (8.15.0)
 5. GraphQL
 6. AWS Services(not be considered in my short-term project, based on the connection permission, different tokens, and kinda...) 
 7. Postman (grap the JSON object for learning the object data structure)
