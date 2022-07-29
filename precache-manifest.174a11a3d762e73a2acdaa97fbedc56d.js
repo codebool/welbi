@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "cf727512c596f3f03520",
+    "revision": "d38697c46a920cd14677",
     "url": "/welbi/static/css/main.ad511d00.chunk.css"
   },
   {
-    "revision": "cf727512c596f3f03520",
-    "url": "/welbi/static/js/main.27c04c1c.chunk.js"
+    "revision": "d38697c46a920cd14677",
+    "url": "/welbi/static/js/main.7f86629a.chunk.js"
   },
   {
     "revision": "d08390e0f135bca1eaf5",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/welbi/static/media/logo.06e73328.svg"
   },
   {
-    "revision": "6a10af71e231bfe2ff579f0a3cf08305",
+    "revision": "fd7e276d9283bacf37480278a8757742",
     "url": "/welbi/index.html"
   }
 ];
