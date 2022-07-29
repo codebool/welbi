@@ -12,7 +12,7 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/.gitignore" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
+          <option name="caretOffset" value="608" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/package.json" />
         </OpenedFileInfo>
         <OpenedFileInfo>
@@ -21,6 +21,14 @@
         </OpenedFileInfo>
         <OpenedFileInfo>
           <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/App.test.js" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="583" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/build/index.html" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="329" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/App.js" />
         </OpenedFileInfo>
       </list>
