@@ -12,7 +12,7 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/.gitignore" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="608" />
+          <option name="caretOffset" value="642" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/package.json" />
         </OpenedFileInfo>
         <OpenedFileInfo>
@@ -20,16 +20,24 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/index.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
+          <option name="caretOffset" value="246" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/App.test.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="583" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/build/index.html" />
+          <option name="caretOffset" value="320" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/App.jsx" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="329" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/App.js" />
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/components/FetchResidentsFromWelbi.jsx" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="172" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/components/FetchProgramsFromWelbi.jsx" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="484" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/my-app/src/components/MainPage.jsx" />
         </OpenedFileInfo>
       </list>
     </option>
