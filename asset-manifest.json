@@ -1,15 +1,15 @@
 {
-  "main.css": "/welbi/static/css/main.5c03feef.chunk.css",
-  "main.js": "/welbi/static/js/main.da23d7da.chunk.js",
-  "main.js.map": "/welbi/static/js/main.da23d7da.chunk.js.map",
-  "runtime~main.js": "/welbi/static/js/runtime~main.68bef01f.js",
-  "runtime~main.js.map": "/welbi/static/js/runtime~main.68bef01f.js.map",
-  "static/js/2.1d7c7fd7.chunk.js": "/welbi/static/js/2.1d7c7fd7.chunk.js",
-  "static/js/2.1d7c7fd7.chunk.js.map": "/welbi/static/js/2.1d7c7fd7.chunk.js.map",
-  "static/js/3.87f4fc67.chunk.js": "/welbi/static/js/3.87f4fc67.chunk.js",
-  "static/js/3.87f4fc67.chunk.js.map": "/welbi/static/js/3.87f4fc67.chunk.js.map",
-  "index.html": "/welbi/index.html",
-  "precache-manifest.4a906a7aba4a81ac1261886e02b01170.js": "/welbi/precache-manifest.4a906a7aba4a81ac1261886e02b01170.js",
-  "service-worker.js": "/welbi/service-worker.js",
-  "static/css/main.5c03feef.chunk.css.map": "/welbi/static/css/main.5c03feef.chunk.css.map"
+  "main.css": "/static/css/main.5c03feef.chunk.css",
+  "main.js": "/static/js/main.d9ca152e.chunk.js",
+  "main.js.map": "/static/js/main.d9ca152e.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.c58ff8e6.js",
+  "runtime~main.js.map": "/static/js/runtime~main.c58ff8e6.js.map",
+  "static/js/2.1d7c7fd7.chunk.js": "/static/js/2.1d7c7fd7.chunk.js",
+  "static/js/2.1d7c7fd7.chunk.js.map": "/static/js/2.1d7c7fd7.chunk.js.map",
+  "static/js/3.87f4fc67.chunk.js": "/static/js/3.87f4fc67.chunk.js",
+  "static/js/3.87f4fc67.chunk.js.map": "/static/js/3.87f4fc67.chunk.js.map",
+  "index.html": "/index.html",
+  "precache-manifest.a775384b5243318ca563f1593a62f525.js": "/precache-manifest.a775384b5243318ca563f1593a62f525.js",
+  "service-worker.js": "/service-worker.js",
+  "static/css/main.5c03feef.chunk.css.map": "/static/css/main.5c03feef.chunk.css.map"
 }
