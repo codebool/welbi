@@ -7,12 +7,12 @@ export default class MainTabs extends Component {
         return (
             <>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident' exact={true} className='nav-link' activeClassName='active'>
+                    <NavLink to='/resident' exact='/resident' className='nav-link' activeClassName='active'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Residents</label>
                     </NavLink>
                 </li>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident/add' exact={true} className='nav-link' activeClassName='active'>
+                    <NavLink to='/resident/add' exact='/resident/add' className='nav-link' activeClassName='active'>
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Resident</label>
                     </NavLink>
                 </li>
@@ -24,17 +24,17 @@ export default class MainTabs extends Component {
         return (
             <>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident' exact={true} className='nav-link' activeClassName='active'>
+                    <NavLink to='/resident' exact='/resident' className='nav-link' activeClassName='active'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Residents</label>
                     </NavLink>
                 </li>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to={`/resident/${id}/edit`} exact={true} className='nav-link' activeClassName='active'>
+                    <NavLink to={`/resident/${id}/edit`} exact={`/resident/${id}/edit`} className='nav-link' activeClassName='active'>
                         <i className='fas fa-info' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>Details</label>
                     </NavLink>
                 </li>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident/add' exact={true} className='nav-link' activeClassName='active'>
+                    <NavLink to='/resident/add' exact='/resident/add' className='nav-link' activeClassName='active'>
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Resident</label>
                     </NavLink>
                 </li>
@@ -46,7 +46,7 @@ export default class MainTabs extends Component {
         let id, edit;
         let editRes, idRes;
         if(this.props.location) {
-            let editRegex = /\/([a-z0-9\-]{36})/;
+            let editRegex = /\/([a-z0-9-]{36})/;
             editRes = this.props.location.pathname.match(editRegex);
             if(editRes && editRes[1]) {
                 edit = editRes[1];

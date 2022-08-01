@@ -4,7 +4,7 @@ import ResidentList from './ResidentList';
 export default class MainPage extends Component {
     cinstructor(props) {
         this.listRef = React.createRef();
-        this.state = {
+        this.state = { 
             resident: '',
         }
     }

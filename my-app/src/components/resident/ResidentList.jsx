@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ReactDOMServer from 'react-dom/server';
+
+const jQuery = window.jQuery, moment = window.moment;
 
 export default class ResidentList extends Component {
     constructor(props) {
@@ -9,7 +12,7 @@ export default class ResidentList extends Component {
         };
     }
 
-    componentDidMount() {
+    loadData() {
         fetch("https://welbi.org/api/residents", {
             method: 'GET',
             // body: JSON.stringify(data), // data can be string or object
@@ -21,9 +24,14 @@ export default class ResidentList extends Component {
           .then((response) => {
             // console.log('Response:', JSON.stringify(response));
             // console.log('Response:', response)
+           
             this.setState({ residents: response, isLoading: false });
           }) // if text, no need for JSON.stringify
           .catch(error => console.error('Error:', error));  
+    }
+
+    componentDidMount() {
+        
     }
 
 

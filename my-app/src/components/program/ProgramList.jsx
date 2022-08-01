@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class FetchProgramsFromWelbi extends Component {
+export default class ProgramList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -9,7 +9,7 @@ export default class FetchProgramsFromWelbi extends Component {
         };
     }
 
-    componentDidMount() {
+    loadData() {
         fetch("https://welbi.org/api/programs", {
             method: 'GET',
             // body: JSON.stringify(data), // data can be string or object
@@ -22,6 +22,10 @@ export default class FetchProgramsFromWelbi extends Component {
             console.log('Response:', JSON.stringify(response))
           }) // if text, no need for JSON.stringify
           .catch(error => console.error('Error:', error));  
+    }
+
+    componentDidMount() {
+        
     }
 
     render() {

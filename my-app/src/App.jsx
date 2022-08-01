@@ -10,21 +10,22 @@ import ProgramMainTabs from './components/program/MainTabs';
 import ProgramEdit from './components/program/ProgramEdit';
 
 export default class App extends Component {
+    
     render() {
         return (
             < BrowserRouter>
                 <Routes>
-                    <Route exact path="/" element={<Menu />} />
+                    <Route exact path="/" element={<Menu />}></Route>
 
-                    <Route path="/resident" element={<ResidentMainTabs />} />
-                    <Route path="/resident" element={<ResidentMainPage />} />
-                    <Route path="/resident/add" element={<ResidentEdit />} />
-                    <Route path="/resident/:id/edit" element={<ResidentEdit />} />
+                    <Route path="/resident" element={<ResidentMainTabs />}></Route>
+                    <Route path="/resident" element={<ResidentMainPage />}></Route>
+                    <Route path="/resident/add" element={<ResidentEdit />}></Route>
+                    <Route path="/resident/:id/edit" element={<ResidentEdit />}></Route>
 
-                    <Route path="/program" element={<ProgramMainTabs />} />
-                    <Route path="/program" element={<ProgramMainPage />} />
-                    <Route path="/program/add" element={<ProgramEdit />} />
-                    <Route path="/program/:id/edit" element={<ProgramEdit />} />
+                    <Route path="/program" element={<ProgramMainTabs />}></Route>
+                    <Route path="/program" element={<ProgramMainPage />}></Route>
+                    <Route path="/program/add" element={<ProgramEdit />}></Route>
+                    <Route path="/program/:id/edit" element={<ProgramEdit />}></Route>
                 </Routes>
             </BrowserRouter>
         );
