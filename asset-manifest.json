@@ -1,7 +1,7 @@
 {
   "main.css": "/welbi/static/css/main.5c03feef.chunk.css",
-  "main.js": "/welbi/static/js/main.7c66e04f.chunk.js",
-  "main.js.map": "/welbi/static/js/main.7c66e04f.chunk.js.map",
+  "main.js": "/welbi/static/js/main.586486df.chunk.js",
+  "main.js.map": "/welbi/static/js/main.586486df.chunk.js.map",
   "runtime~main.js": "/welbi/static/js/runtime~main.68bef01f.js",
   "runtime~main.js.map": "/welbi/static/js/runtime~main.68bef01f.js.map",
   "static/js/2.1d7c7fd7.chunk.js": "/welbi/static/js/2.1d7c7fd7.chunk.js",
@@ -9,7 +9,7 @@
   "static/js/3.87f4fc67.chunk.js": "/welbi/static/js/3.87f4fc67.chunk.js",
   "static/js/3.87f4fc67.chunk.js.map": "/welbi/static/js/3.87f4fc67.chunk.js.map",
   "index.html": "/welbi/index.html",
-  "precache-manifest.90fc140b2df810d861bd7c3885aa3fea.js": "/welbi/precache-manifest.90fc140b2df810d861bd7c3885aa3fea.js",
+  "precache-manifest.1e5361e39143ad166f15ec50bd705060.js": "/welbi/precache-manifest.1e5361e39143ad166f15ec50bd705060.js",
   "service-worker.js": "/welbi/service-worker.js",
   "static/css/main.5c03feef.chunk.css.map": "/welbi/static/css/main.5c03feef.chunk.css.map"
 }
