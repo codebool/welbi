@@ -7,12 +7,12 @@ export default class MainTabs extends Component {
         return (
             <>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident' exact='/resident' className='nav-link' activeClassName='active'>
+                    <NavLink to='/resident' className='nav-link' activeClassName='selected'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Residents</label>
                     </NavLink>
                 </li>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident/add' exact='/resident/add' className='nav-link' activeClassName='active'>
+                    <NavLink to='/resident/add' className='nav-link' activeClassName='selected'>
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Resident</label>
                     </NavLink>
                 </li>
@@ -23,18 +23,18 @@ export default class MainTabs extends Component {
     renderEditMenu = (id) => {
         return (
             <>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident' exact='/resident' className='nav-link' activeClassName='active'>
+                <li className='nav-item'>
+                    <NavLink to='/resident' className='nav-link' activeClassName='selected'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Residents</label>
                     </NavLink>
                 </li>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to={`/resident/${id}/edit`} exact={`/resident/${id}/edit`} className='nav-link' activeClassName='active'>
+                <li className='nav-item'>
+                    <NavLink to={`/resident/${id}/edit`} className='nav-link' activeClassName='selected'>
                         <i className='fas fa-info' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>Details</label>
                     </NavLink>
                 </li>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/resident/add' exact='/resident/add' className='nav-link' activeClassName='active'>
+                <li className='nav-item'>
+                    <NavLink to='/resident/add' className='nav-link' activeClassName='selected'>
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Resident</label>
                     </NavLink>
                 </li>
@@ -57,7 +57,7 @@ export default class MainTabs extends Component {
             if(idRes && idRes[1]) {
                 id = parseInt(idRes[1]);
             }
-        }
+        }   
 
         return (
             <ul className='nav nav-tabs'>

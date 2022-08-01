@@ -8,6 +8,7 @@ import ResidentEdit from './components/resident/ResidentEdit';
 import ProgramMainPage from './components/program/MainPage';
 import ProgramMainTabs from './components/program/MainTabs';
 import ProgramEdit from './components/program/ProgramEdit';
+  
 
 export default class App extends Component {
     
@@ -17,13 +18,11 @@ export default class App extends Component {
                 <Routes>
                     <Route exact path="/" element={<Menu />}></Route>
 
-                    <Route path="/resident" element={<ResidentMainTabs />}></Route>
-                    <Route path="/resident" element={<ResidentMainPage />}></Route>
+                    <Route path="/resident"  element={[<ResidentMainTabs />, <ResidentMainPage />]}></Route>
                     <Route path="/resident/add" element={<ResidentEdit />}></Route>
                     <Route path="/resident/:id/edit" element={<ResidentEdit />}></Route>
 
-                    <Route path="/program" element={<ProgramMainTabs />}></Route>
-                    <Route path="/program" element={<ProgramMainPage />}></Route>
+                    <Route path="/program" element={[<ProgramMainTabs />, <ProgramMainPage />]}></Route>
                     <Route path="/program/add" element={<ProgramEdit />}></Route>
                     <Route path="/program/:id/edit" element={<ProgramEdit />}></Route>
                 </Routes>

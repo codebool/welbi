@@ -7,12 +7,12 @@ export default class MainTabs extends Component {
         return (
             <>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program' exact='/program' className='nav-link' activeClassName='active'>
+                    <NavLink to='/program' className='nav-link' activeClassName='active'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Programs</label>
                     </NavLink>
                 </li>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program/add' exact='/program/add' className='nav-link' activeClassName='active'>
+                    <NavLink to='/program/add' className='nav-link' activeClassName='active'>
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Programs</label>
                     </NavLink>
                 </li>
@@ -24,17 +24,17 @@ export default class MainTabs extends Component {
         return (
             <>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program' exact='/program' className='nav-link' activeClassName='active'>
+                    <NavLink to='/program' className='nav-link' activeClassName='active'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Programs</label>
                     </NavLink>
                 </li>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to={`/program/${id}/edit`} exact={`/program/${id}/edit`} className='nav-link' activeClassName='active'>
+                    <NavLink to={`/program/${id}/edit`} className='nav-link' activeClassName='active'>
                         <i className='fas fa-info' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>Details</label>
                     </NavLink>
                 </li>
                 <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program/add' exact='/program/add' className='nav-link' activeClassName='active'>
+                    <NavLink to='/program/add' className='nav-link' activeClassName='active'>
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Programs</label>
                     </NavLink>
                 </li>
