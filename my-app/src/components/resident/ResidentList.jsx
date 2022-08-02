@@ -56,7 +56,7 @@ export default class ResidentList extends Component {
             },
             'order': [[0, 'desc']],
             'columns': [
-                { data: 'id', name: 'id', title: 'ID' },
+                { data: 'id', name: 'id', title: 'ID', defaultContent: '-' },
                 { data: 'name', name: 'name', title: 'Name' },
                 { data: 'firstName', name: 'firstName', title: 'First Name' },
                 { data: 'lastName', name: 'lastName', title: 'Last Name' },
@@ -72,6 +72,17 @@ export default class ResidentList extends Component {
                 { data: 'attendance', name: 'attendance', title: 'Attendance' },
                 { data: null, title: 'Actions' }
             ],
+            'columnDefs': [
+                {
+                    'targets': [0],
+                    'visible': true,
+                    'searchable': false,
+                    'render': (data, type, row, meta) => {
+                        //   338,675,114,871,620,180
+                        return (data > 2147483647) ? '-' : data;
+                    }
+                }
+            ]
         })
     }
 
