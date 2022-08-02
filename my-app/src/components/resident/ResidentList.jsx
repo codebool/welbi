@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-const jQuery = window.jQuery, moment = window.moment;
+const jQuery = window.jQuery;
 
 export default class ResidentList extends Component {
     constructor(props) {
@@ -19,11 +19,14 @@ export default class ResidentList extends Component {
             'stateSave': false,
             'autoWidth': false,
             'deferRender': true,
-            'dom': '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12 col-md-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+            'dom': '<"row"<"col-sm-3"B><"col-sm-7"<"toolbar"><"clear">><"col-sm-2"f>>' +
+                '<"row"<"col-sm-12"tr>>' +
+                '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             'buttons': [
-                'copy', 'excel', 'pdf', 'colvis', 'print', 'pageLength'
+                'colvis', 
+                'pageLength', 
+                'pdf'
             ],
-            'pageLength': 10,
             'ajax': (data, callback) => {
                 fetch("https://welbi.org/api/residents", {
                     method: 'GET',
@@ -56,34 +59,80 @@ export default class ResidentList extends Component {
             },
             'order': [[0, 'desc']],
             'columns': [
-                { data: 'id', name: 'id', title: 'ID', defaultContent: '-' },
+                { data: 'id', name: 'id', title: 'ID' },
                 { data: 'name', name: 'name', title: 'Name' },
                 { data: 'firstName', name: 'firstName', title: 'First Name' },
                 { data: 'lastName', name: 'lastName', title: 'Last Name' },
                 { data: 'preferredName', name: 'preferredName', title: 'Preferred Name' },
                 { data: 'status', name: 'status', title: 'Status' },
-                { data: 'room', title: 'Room' },
-                { data: 'levelOfCare', title: 'Level of Care' },
-                { data: 'ambulation', title: 'Ambulation' },
-                { data: 'birthDate', title: 'Birth Date' },
-                { data: 'moveInDate', title: 'Move In Date' },
-                { data: 'created_at', title: 'Created At' },
-                { data: 'updated_at', title: 'Updated At' },
+                { data: 'room', name: 'room', title: 'Room' },
+                { data: 'levelOfCare', name: 'levelOfCare', title: 'Level of Care' },
+                { data: 'ambulation', name: 'ambulation', title: 'Ambulation' },
+                { data: 'birthDate', name: 'birthDate', title: 'Birth Date' },
+                { data: 'moveInDate', name: 'moveInDate', title: 'Move In Date' },
+                { data: 'created_at', name: 'created_at', title: 'Created At', visible: false },
+                { data: 'updated_at', title: 'Updated At', visible: false },
                 { data: 'attendance', name: 'attendance', title: 'Attendance' },
                 { data: null, title: 'Actions' }
             ],
             'columnDefs': [
                 {
-                    'targets': [0],
+                    'targets': [4, 5],
+                    'visible': true,
+                    'searchable': true,
+                    'render': (data, type, row, meta) => {
+                        return (data) ? data : '-';
+                    }
+                },
+                {
+                    'targets': [9, 10, 11, 12],
+                    'visible': true,
+                    'searchable': false,
+                    'render': function (data) {
+                        if (data) {
+                            const result = Object.entries(data);
+                            for (const [key, value] of result) {
+                                if (value) {
+                                    return value;
+                                }
+                            }
+                        }
+                        return '-';
+                    }
+                },
+                {
+                    'targets': [13],
                     'visible': true,
                     'searchable': false,
                     'render': (data, type, row, meta) => {
-                        //   338,675,114,871,620,180
-                        return (data > 2147483647) ? '-' : data;
+                        if (data) {
+                            return ReactDOMServer.renderToString(<a href={`/resident/${row.id}/edit`}>View</a>);
+                        }
+                    }
+                },
+                {
+                    "targets":    [14],
+                    "searchable": false,
+                    "orderable":  false,
+                    "className":  "all",
+                    "render":     function(data, type, row, meta) {
+                        return ReactDOMServer.renderToStaticMarkup(
+                            <div className="btn-group" role="group" aria-label="Button group with nested dropdown" data-rownum={meta.row}>
+                                <button type="button" className="btn btn-secondary action-edit" id="btnGroup"> Edit</button>
+                            </div>
+                        )
                     }
                 }
             ]
-        })
+        });
+
+        jQuery(this.table.current).on('click', '.action-edit', {}, (e) => {
+            console.log("sssssss");
+            e.preventDefault();
+            let rowIndex = e.target.closest('[data-rownum]').getAttribute('data-rownum');
+            let row      = this.dt.row(rowIndex).data();
+            this.props.history.push(`/resident/${row.id}/edit`);
+        });
     }
 
     draw = () => {
@@ -94,12 +143,16 @@ export default class ResidentList extends Component {
         return false;
     }
 
+    componentWillUnmount() {
+        jQuery(this.table.current).off('click', '.action-edit');
+        jQuery(this.table.current).DataTable().destroy(true);
+    }
 
     render() {
         return (
-            <>
+            <div className='mt-3'>
                 <table ref={this.table} className='table table-striped' />
-            </>
+            </div>
         )
     }
 }
