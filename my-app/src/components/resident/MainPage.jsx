@@ -15,11 +15,10 @@ export default class MainPage extends Component {
     }
 
     render() {
-        console.log(";;;");
         return (
-            <>
+            <div>
                 <ResidentList ref={this.listRef} {...this.props} filterValues={{ resident: this.state.resident }} />
-            </>
+            </div>
         )
     }
 }

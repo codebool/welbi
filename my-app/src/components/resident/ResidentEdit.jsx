@@ -32,6 +32,7 @@ export default class ResidentEdit extends Component {
 
 
     render() {
+        const {isLoading} = this.state;
         return (
             <div className="json-viewer">
                 <header className="App-header">
