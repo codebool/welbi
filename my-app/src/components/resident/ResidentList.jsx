@@ -23,10 +23,13 @@ export default class ResidentList extends Component {
                 '<"row"<"col-sm-12"tr>>' +
                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             'buttons': [
-                'colvis', 
-                'pageLength', 
-                'pdf'
+                // 'colvis', 
+                'pageLength',
+                'pdf',
+                'excel'
             ],
+            'pageLength': 10,
+            'lengthMenu': [[10, 20, 25, 50, -1], [10, 20, 25, 50, 'All']],
             'ajax': (data, callback) => {
                 fetch("https://welbi.org/api/residents", {
                     method: 'GET',
@@ -111,11 +114,11 @@ export default class ResidentList extends Component {
                     }
                 },
                 {
-                    "targets":    [14],
+                    "targets": [14],
                     "searchable": false,
-                    "orderable":  false,
-                    "className":  "all",
-                    "render":     function(data, type, row, meta) {
+                    "orderable": false,
+                    "className": "all",
+                    "render": function (data, type, row, meta) {
                         return ReactDOMServer.renderToStaticMarkup(
                             <div className="btn-group" role="group" aria-label="Button group with nested dropdown" data-rownum={meta.row}>
                                 <button type="button" className="btn btn-secondary action-edit" id="btnGroup"> Edit</button>
@@ -127,10 +130,9 @@ export default class ResidentList extends Component {
         });
 
         jQuery(this.table.current).on('click', '.action-edit', {}, (e) => {
-            console.log("sssssss");
             e.preventDefault();
             let rowIndex = e.target.closest('[data-rownum]').getAttribute('data-rownum');
-            let row      = this.dt.row(rowIndex).data();
+            let row = this.dt.row(rowIndex).data();
             this.props.history.push(`/resident/${row.id}/edit`);
         });
     }

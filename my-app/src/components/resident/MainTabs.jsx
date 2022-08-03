@@ -24,17 +24,17 @@ export default class MainTabs extends Component {
         return (
             <>
                 <li className='nav-item'>
-                    <NavLink to='/resident' className='nav-link' activeClassName='selected'>
+                    <NavLink to='/resident' exact={true} className='nav-link' activeClassName='active'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Residents</label>
                     </NavLink>
                 </li>
                 <li className='nav-item'>
-                    <NavLink to={`/resident/${id}/edit`} className='nav-link' activeClassName='selected'>
+                    <NavLink to={`/resident/${id}/edit`} exact={true} className='nav-link' activeClassName='active'>
                         <i className='fas fa-info' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>Details</label>
                     </NavLink>
                 </li>
                 <li className='nav-item'>
-                    <NavLink to='/resident/add' className='nav-link' activeClassName='selected'>
+                    <NavLink to='/resident/add' exact={true} className='nav-link' activeClassName='active'>
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Resident</label>
                     </NavLink   >
                 </li>
