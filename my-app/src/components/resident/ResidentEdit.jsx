@@ -15,11 +15,21 @@ export default class ResidentEdit extends Component {
             ambulation: '',
             birthDate: '',
             moveInDate: '',
-            created_at: '',
-            updated_at: '',
+            createdAt: '',
+            updatedAt: '',
             attendance: '',
-            dirty: true
+            dirty: false
         };
+    }
+
+    parseObject = (obj) => {
+        const result = Object.entries(obj);    
+        for (const [key, value] of result) {
+            if (value) {
+                return value;
+            }
+        } 
+        return {};
     }
 
     loadResident = (id) => {
@@ -34,8 +44,22 @@ export default class ResidentEdit extends Component {
             .then((response) => {
                 response.find((response) => {
                     if (response.id === id) {
-                        console.log(response);
-                        this.setState({...response});
+                        console.log(response.attendance);
+                        this.setState({
+                            name: response.name,
+                            firstName: response.firstName,
+                            lastName: response.lastName,
+                            preferredName: response.preferredName,
+                            status: response.status,
+                            room: response.room,
+                            levelOfCare: response.levelOfCare,
+                            ambulation: response.ambulation,
+                            birthDate: this.parseObject(response.birthDate),
+                            moveInDate: this.parseObject(response.moveInDate),
+                            createdAt: this.parseObject(response.createdAt),
+                            updatedAt: this.parseObject(response.updatedAt),
+                            attendance: this.parseObject(response.attendance),
+                        });
                     }
                 });
             }) // if text, no need for JSON.stringify
@@ -56,6 +80,7 @@ export default class ResidentEdit extends Component {
 
     render() {
         const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, birthDate, moveInDate, createdAt, updatedAt, attendance, dirty } = this.state;
+        
         return (
             <div className="card" id="card-new">
                 <div className="card-body">
@@ -115,6 +140,11 @@ export default class ResidentEdit extends Component {
                             <div className="form-group col-md-6">
                                 <label>Ambulation</label>
                                 <input name="ambulation" type="text" onChange={this.handleChange} value={ambulation} className="form-control" />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Attendance</label>
+                                <input name="attendance" type="text" onChange={this.handleChange} value={attendance} className="form-control" />
                             </div>
 
                             <div className="form-group col-md-6">

@@ -23,7 +23,7 @@ export default class ResidentList extends Component {
                 '<"row"<"col-sm-12"tr>>' +
                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             'buttons': [
-                // 'colvis', 
+                'colvis', 
                 'pageLength',
                 'pdf',
                 'excel'
@@ -73,8 +73,8 @@ export default class ResidentList extends Component {
                 { data: 'ambulation', name: 'ambulation', title: 'Ambulation' },
                 { data: 'birthDate', name: 'birthDate', title: 'Birth Date' },
                 { data: 'moveInDate', name: 'moveInDate', title: 'Move In Date' },
-                { data: 'created_at', name: 'created_at', title: 'Created At', visible: false },
-                { data: 'updated_at', title: 'Updated At', visible: false },
+                { data: 'createdAt', name: 'createdAt', title: 'Created At' },
+                { data: 'updatedAt', name: 'updatedAt', title: 'Updated At' },
                 { data: 'attendance', name: 'attendance', title: 'Attendance' },
                 { data: null, title: 'Actions' }
             ],
