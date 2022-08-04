@@ -13,22 +13,23 @@ export default class ResidentEdit extends Component {
             room: '',
             levelOfCare: '',
             ambulation: '',
+            author: '',
             birthDate: '',
             moveInDate: '',
             createdAt: '',
             updatedAt: '',
-            attendance: '',
+            attendance: [],
             dirty: false
         };
     }
 
     parseObject = (obj) => {
-        const result = Object.entries(obj);    
+        const result = Object.entries(obj);
         for (const [key, value] of result) {
             if (value) {
                 return value;
             }
-        } 
+        }
         return {};
     }
 
@@ -44,7 +45,6 @@ export default class ResidentEdit extends Component {
             .then((response) => {
                 response.find((response) => {
                     if (response.id === id) {
-                        console.log(response.attendance);
                         this.setState({
                             name: response.name,
                             firstName: response.firstName,
@@ -52,14 +52,16 @@ export default class ResidentEdit extends Component {
                             preferredName: response.preferredName,
                             status: response.status,
                             room: response.room,
-                            levelOfCare: response.levelOfCare,
-                            ambulation: response.ambulation,
+                            levelOfCare: response.levelOfCare ? response.levelOfCare : '',
+                            ambulation: response.ambulation ? response.ambulation : '',
+                            author: response.author ? response.author : '',
                             birthDate: this.parseObject(response.birthDate),
                             moveInDate: this.parseObject(response.moveInDate),
                             createdAt: this.parseObject(response.createdAt),
                             updatedAt: this.parseObject(response.updatedAt),
-                            attendance: this.parseObject(response.attendance),
+                            attendance: response.attendance,
                         });
+                        
                     }
                 });
             }) // if text, no need for JSON.stringify
@@ -77,10 +79,56 @@ export default class ResidentEdit extends Component {
         }
     }
 
+    handleChange = (event, callback) => {
+        let fieldDetails = { dirty: true };
+
+        fieldDetails[event.target.name] = event.target.value;
+        this.setState(fieldDetails, () => {
+            if (typeof callback == 'function') {
+                callback();
+            }
+        });
+    }
+
+    handleReset = (e) => {
+        e.preventDefault();
+
+        let id = this.props.match.params.id;
+
+        if (id) {
+            this.loadResident(id);
+        } else {
+            this.setState({
+                name: '',
+                firstName: '',
+                lastName: '',
+                preferredName: '',
+                status: '',
+                room: '',
+                levelOfCare: '',
+                ambulation: '',
+                author: '',
+                birthDate: '',
+                moveInDate: '',
+                createdAt: '',
+                updatedAt: '',
+                attendance: [],
+                dirty: false
+            })
+        }
+    }
+
 
     render() {
-        const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, birthDate, moveInDate, createdAt, updatedAt, attendance, dirty } = this.state;
-        
+        const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, attendance, dirty } = this.state;
+
+        let newAttendance = attendance.map((attendance) => {
+            return <div key={attendance.programId}>
+                <input name="attendance" type="text" onChange={this.handleChange} value={attendance.status + attendance.programId + attendance.author} className="form-control" />
+            </div>
+        });
+
+
         return (
             <div className="card" id="card-new">
                 <div className="card-body">
@@ -114,7 +162,7 @@ export default class ResidentEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Preferred Name</label>
-                                <input name="lastName" type="text" onChange={this.handleChange} value={lastName} className="form-control" />
+                                <input name="preferredName" type="text" onChange={this.handleChange} value={preferredName} className="form-control" />
                             </div>
 
                             <div className="form-group col-md-6">
@@ -143,33 +191,45 @@ export default class ResidentEdit extends Component {
                             </div>
 
                             <div className="form-group col-md-6">
-                                <label>Attendance</label>
-                                <input name="attendance" type="text" onChange={this.handleChange} value={attendance} className="form-control" />
+                                <label>Author</label>
+                                <input name="author" type="text" onChange={this.handleChange} value={author} className="form-control" />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Birth Date</label>
-                                <textarea name="birthDate" type="text" onChange={this.handleChange} value={birthDate} className="form-control" />
+                                <input name="birthDate" type="text" onChange={this.handleChange} value={birthDate} className="form-control" />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Move In Date</label>
-                                <textarea name="moveInDate" type="text" onChange={this.handleChange} value={moveInDate} className="form-control" />
+                                <input name="moveInDate" type="text" onChange={this.handleChange} value={moveInDate} className="form-control" />
                             </div>
 
                             {(id) ?
                                 <>
                                     <div className="form-group col-md-6">
                                         <label>Created At</label>
-                                        <textarea name="createdAt" type="text" onChange={this.handleChange} value={createdAt} className="form-control" />
+                                        <input name="createdAt" type="text" onChange={this.handleChange} value={createdAt} className="form-control" />
                                     </div>
 
                                     <div className="form-group col-md-6">
                                         <label>Updated At</label>
-                                        <textarea name="updatedAt" type="text" onChange={this.handleChange} value={updatedAt} className="form-control" />
+                                        <input name="updatedAt" type="text" onChange={this.handleChange} value={updatedAt} className="form-control" />
                                     </div>
                                 </>
                                 : ''}
+
+                            {(id) ?
+                                <div className="form-group col-md-6">
+                                    <label>Attendance</label>
+                                    {this.newAttendance}
+                                </div>
+                                :
+                                <div className="form-group col-md-6">
+                                    <label>Attendance</label>
+                                    <input name="attendance" type="text" onChange={this.handleChange} value={attendance} className="form-control" />
+                                </div>
+                            }
 
                             <div className="form-group col-md-12">
                                 <div className='col-12 text-right'>

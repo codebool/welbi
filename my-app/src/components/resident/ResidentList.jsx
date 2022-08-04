@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-const jQuery = window.jQuery;
+const jQuery = window.jQuery, moment = window.moment;
 
 export default class ResidentList extends Component {
     constructor(props) {
@@ -23,7 +23,6 @@ export default class ResidentList extends Component {
                 '<"row"<"col-sm-12"tr>>' +
                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             'buttons': [
-                'colvis', 
                 'pageLength',
                 'pdf',
                 'excel'
@@ -60,7 +59,7 @@ export default class ResidentList extends Component {
                         });
                     });
             },
-            'order': [[0, 'desc']],
+            'order': [[0, 'asc']],
             'columns': [
                 { data: 'id', name: 'id', title: 'ID' },
                 { data: 'name', name: 'name', title: 'Name' },
@@ -71,6 +70,7 @@ export default class ResidentList extends Component {
                 { data: 'room', name: 'room', title: 'Room' },
                 { data: 'levelOfCare', name: 'levelOfCare', title: 'Level of Care' },
                 { data: 'ambulation', name: 'ambulation', title: 'Ambulation' },
+                { data: 'author', name: 'author', title: 'Author' },
                 { data: 'birthDate', name: 'birthDate', title: 'Birth Date' },
                 { data: 'moveInDate', name: 'moveInDate', title: 'Move In Date' },
                 { data: 'createdAt', name: 'createdAt', title: 'Created At' },
@@ -88,7 +88,15 @@ export default class ResidentList extends Component {
                     }
                 },
                 {
-                    'targets': [9, 10, 11, 12],
+                    'targets': [9],
+                    'visible': true,
+                    'searchable': true,
+                    'render': (data, type, row, meta) => {
+                        return (data) ? data : '-';
+                    }
+                },
+                {
+                    'targets': [10, 11, 12, 13],
                     'visible': true,
                     'searchable': false,
                     'render': function (data) {
@@ -96,25 +104,28 @@ export default class ResidentList extends Component {
                             const result = Object.entries(data);
                             for (const [key, value] of result) {
                                 if (value) {
-                                    return value;
+                                    return moment(value).format('YYYY-MM-DD HH:mm:ssZ');
                                 }
                             }
                         }
-                        return '-';
+                        return {};
                     }
                 },
                 {
-                    'targets': [13],
+                    'targets': [14],
                     'visible': true,
                     'searchable': false,
                     'render': (data, type, row, meta) => {
-                        if (data) {
-                            return ReactDOMServer.renderToString(<a href={`/resident/${row.id}/edit`}>View</a>);
-                        }
+                        const listItems = data.map((i) => <li key={i.programId}><i><small><b>Status:</b> {i.status} <b>Program ID:</b> {i.programId} <b>Author:</b> {i.author ? i.author : ''}</small></i></li>);
+
+                        return ReactDOMServer.renderToStaticMarkup(
+                            <div>
+                                <ol>{listItems}</ol>
+                            </div>)
                     }
                 },
                 {
-                    "targets": [14],
+                    "targets": [15],
                     "searchable": false,
                     "orderable": false,
                     "className": "all",
