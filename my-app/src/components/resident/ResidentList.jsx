@@ -24,7 +24,7 @@ export default class ResidentList extends Component {
                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             'buttons': [
                 'pageLength',
-                'pdf',
+                'colvis',
                 'excel'
             ],
             'pageLength': 10,
@@ -75,7 +75,7 @@ export default class ResidentList extends Component {
                 { data: 'moveInDate', name: 'moveInDate', title: 'Move In Date' },
                 { data: 'createdAt', name: 'createdAt', title: 'Created At' },
                 { data: 'updatedAt', name: 'updatedAt', title: 'Updated At' },
-                { data: 'attendance', name: 'attendance', title: 'Attendance' },
+                { data: 'attendance', name: 'attendance', title: 'Attendance', visible: false },
                 { data: null, title: 'Actions' }
             ],
             'columnDefs': [
