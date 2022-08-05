@@ -6,7 +6,7 @@ export default class Menu extends Component {
         return <div className='wrapper text-center'>
             <Link to={'/resident'} className={'box'}>
                 {/* <div className='card-icon'>
-                    <img src="../assets/images/Family-Silhouette.svg" alt="no resident pic" className="card-icon"/>
+                    <img src="..//assets/images/logo512.png" alt="no resident pic" className="card-icon"/>
                 </div> */}
                 <h3>Residents</h3>
                 <p className='card-description'>This is where you can view and edit your residents.</p>

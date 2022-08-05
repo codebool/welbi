@@ -1,6 +1,195 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
+import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 
-export default class ResidentEdit extends Component {
+class AttendanceEdit extends PureComponent {
+    state = {
+        statusValue: '',
+        programIdValue: '',
+        authorValue: '',
+        error: '',
+        loading: false,
+        showInput: false
+    }
+
+    static defaultProps = {
+        programs: [],
+        allPrograms: [],
+        allStatus: []
+    }
+
+    handleDeleteProgram = (program) => () => {
+        const { programs, change } = this.props;
+        const newPrograms = programs.filter(oldProgram => oldProgram.programId !== program.programId);
+        change('programs', newPrograms);
+    }
+
+    handleCancel = (e) => {
+        e.preventDefault();
+        this.setState({ showInput: false });
+    }
+
+    handleStatusChange = (e) => {
+        e.preventDefault();
+        this.setState({ statusValue: e.target.value, error: '' });
+    }
+
+    handleProgramIdChange = (e) => {
+        e.preventDefault();
+        this.setState({ programIdValue: e.target.value, error: '' });
+    }
+
+    handleAuthorChange = (e) => {
+        e.preventDefault();
+        this.setState({ authorValue: e.target.value, error: '' });
+    }
+
+    loadPrograms = () => {
+        this.setState({ loading: true });
+        this.props.change('allStatus', [
+            { value: 'Active', label: 'Active' },
+            { value: 'Passive', label: 'Passive' },
+            { value: 'Declined', label: 'Declined' },
+            { value: 'Undefined', label: 'Undefined' }
+        ]);
+
+        fetch("https://welbi.org/api/programs", {
+            method: 'GET',
+            // body: JSON.stringify(data), // data can be string or object
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': "Bearer 88a8ae6c-6b3e-400e-b052-48680a8aff14",
+            }
+        }).then(res => res.json()) // if response is json, for text use res.text()
+            .then((response) => {
+                this.props.change('allPrograms', response);
+                this.setState({ loading: false });
+            }) // if text, no need for JSON.stringify
+            .catch((e) => {
+                console.log(e);
+                this.setState({ loading: false });
+            });
+    }
+
+    handleShowProgramInput = () => {
+        this.setState({
+            showInput: true,
+            error: '',
+            statusValue: '',
+            programIdValue: '',
+            authorValue: ''
+        });
+        this.loadPrograms();
+    }
+
+    handleProgramSubmit = (e) => {
+        e.preventDefault();
+        const { change, programs } = this.props;
+        const status = this.state.statusValue;
+        const programId = this.state.programIdValue;
+        const author = this.state.authorValue;
+        const programObject = {
+            status: status,
+            programId: programId,
+            author: author
+        }
+
+        if (programs.length && programs.map(program => program.programId).includes(programId)) {
+            this.setState({ error: 'Program already exists' });
+        }
+        else if (status === '') {
+            this.setState({ error: 'Status is required' });
+        }
+        else if (programId === '') {
+            this.setState({ error: 'Program ID is required' });
+        }
+        else if (programObject) {
+            change('programs', [...programs, programObject]);
+            this.setState({ showInput: false });
+        }
+    }
+
+    render() {
+        const { programs, allPrograms, allStatus } = this.props;
+        const { showInput, error } = this.state;
+        return (
+            <>
+                <label style={{ marginBottom: '0' }}>
+                    <strong>Attendances</strong>
+                    {error ? <small className='text-danger ml-3'>{this.state.error}</small> : null}
+                </label>
+                <div className='form-group form-inline'>
+                    {(programs && programs.length) ? programs.map((item, index) =>
+                        <span className='bg-light text-dark rounded'
+                            key={index}
+                            style={{ padding: '0.4em', margin: '0.5em 0.5em 0 0' }}
+                        >
+                            <span style={{ cursor: 'pointer' }}>
+                                <b>Status:</b>{item.status} <br /><b>ProgramId:</b>{item.programId} {(item.author) ? <><br /><b>Author:</b>{item.author}</> : null}
+                            </span> <i className='fas fa-times ml-2 pr-1'
+                                onClick={this.handleDeleteProgram(item)}
+                                title='Delete'
+                                style={{ cursor: 'pointer' }} />
+                        </span>)
+                        : null}
+                    <div className='form-group mt-2'>
+                        {showInput ?
+                            <div className='form-group'>
+                                <input className='form-control'
+                                    type='text'
+                                    list='program-status'
+                                    onChange={this.handleStatusChange}
+                                    disabled={this.state.loading}
+                                    value={this.state.statusValue}
+                                    placeholder='select/enter a status'
+                                />
+                                <datalist id='program-status'>
+                                    {allStatus.map((item, index) => <option key={index} value={item.value} />)}
+                                </datalist>
+
+                                <label className="form-control-label"></label>
+                                <select name="programs" id="programs" className="form-control" value={this.state.programIdValue} onChange={this.handleProgramIdChange}>
+                                    <option value="" disabled hidden>Select a program</option>
+                                    {allPrograms ? allPrograms.map((item, index) => {
+                                        return <option key={index} value={item.id}>{item.id} - {item.name}</option>
+                                    }) : null}
+                                </select>
+
+
+                                <label className="form-control-label"></label>
+                                <input name="author" type="text" onChange={this.handleAuthorChange} className="form-control" placeholder="enter the author" />
+
+
+                                {this.state.loading ?
+                                    <div style={{ margin: '0.2em 0 0 0.5em' }}>
+                                        <i className='fas fa-spinner fa-pulse text-warning' style={{ fontSize: '2rem' }} />
+                                    </div>
+                                    :
+                                    <button className='btn btn-success ml-1' type='button' onClick={this.handleProgramSubmit}>
+                                        <i className='fas fa-check' title='Confirm' />
+                                    </button>
+                                }
+                                {!this.state.loading ?
+                                    <button className='btn btn-danger ml-1' type='button' onClick={this.handleCancel}>
+                                        <i className='fas fa-times' title='Cancel' />
+                                    </button>
+                                    : null}
+                            </div>
+                            :
+                            <button className='btn btn-secondary' type='button' onClick={this.handleShowProgramInput}>
+                                <i className='fas fa-plus'
+                                    title='Add New Attendance'
+                                />
+                            </button>
+                        }
+                    </div>
+                </div>
+            </>
+        )
+    }
+}
+
+class ResidentEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,6 +223,7 @@ export default class ResidentEdit extends Component {
     }
 
     loadResident = (id) => {
+        const { initialize } = this.props;
         fetch("https://welbi.org/api/residents", {
             method: 'GET',
             // body: JSON.stringify(data), // data can be string or object
@@ -45,6 +235,9 @@ export default class ResidentEdit extends Component {
             .then((response) => {
                 response.find((response) => {
                     if (response.id === id) {
+                        initialize({
+                            programs: response.attendance
+                        });
                         this.setState({
                             name: response.name,
                             firstName: response.firstName,
@@ -61,7 +254,6 @@ export default class ResidentEdit extends Component {
                             updatedAt: this.parseObject(response.updatedAt),
                             attendance: response.attendance,
                         });
-                        
                     }
                 });
             }) // if text, no need for JSON.stringify
@@ -90,13 +282,65 @@ export default class ResidentEdit extends Component {
         });
     }
 
+    handleFieldChange = (field, value) => {
+        this.props.change(field, value);
+
+        if (field === 'programs') {
+            this.setState({
+                dirty: true
+            });
+        }
+    }
+
     handleReset = (e) => {
         e.preventDefault();
+
+        const { initialize, formValues } = this.props;
+        const { allPrograms, allStatus } = formValues ? formValues : {};
 
         let id = this.props.match.params.id;
 
         if (id) {
-            this.loadResident(id);
+            fetch("https://welbi.org/api/residents", {
+                method: 'GET',
+                // body: JSON.stringify(data), // data can be string or object
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': "Bearer 88a8ae6c-6b3e-400e-b052-48680a8aff14",
+                }
+            }).then(res => res.json()) // if response is json, for text use res.text()
+                .then((response) => {
+                    response.find((response) => {
+                        if (response.id === id) {
+                            initialize({
+                                programs: response.attendance,
+                                allPrograms: allPrograms,
+                                allStatus: allStatus
+                            });
+                            this.setState({
+                                name: response.name,
+                                firstName: response.firstName,
+                                lastName: response.lastName,
+                                preferredName: response.preferredName,
+                                status: response.status,
+                                room: response.room,
+                                levelOfCare: response.levelOfCare ? response.levelOfCare : '',
+                                ambulation: response.ambulation ? response.ambulation : '',
+                                author: response.author ? response.author : '',
+                                birthDate: this.parseObject(response.birthDate),
+                                moveInDate: this.parseObject(response.moveInDate),
+                                createdAt: this.parseObject(response.createdAt),
+                                updatedAt: this.parseObject(response.updatedAt),
+                                attendance: response.attendance,
+                            });
+
+                        }
+                    });
+                }) // if text, no need for JSON.stringify
+                .catch(error => console.error('Error:', error));
+            this.setState({
+                dirty: false
+            })
         } else {
             this.setState({
                 name: '',
@@ -114,19 +358,30 @@ export default class ResidentEdit extends Component {
                 updatedAt: '',
                 attendance: [],
                 dirty: false
+            });
+            initialize({
+                programs: [],
+                allPrograms: allPrograms,
+                allStatus: allStatus
             })
         }
     }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+
+    }
+
 
     render() {
+        const { formValues } = this.props;
         const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, attendance, dirty } = this.state;
-
-        let newAttendance = attendance.map((attendance) => {
-            return <div key={attendance.programId}>
-                <input name="attendance" type="text" onChange={this.handleChange} value={attendance.status + attendance.programId + attendance.author} className="form-control" />
-            </div>
-        });
+        const { programs, allPrograms, allStatus } = formValues ? formValues : {};
+        // let newAttendance = attendance.map((attendance) => {
+        //     return <div key={attendance.programId}>
+        //         <input name="attendance" type="text" onChange={this.handleChange} value={attendance.status + attendance.programId + attendance.author} className="form-control" />
+        //     </div>
+        // });
 
 
         return (
@@ -219,7 +474,7 @@ export default class ResidentEdit extends Component {
                                 </>
                                 : ''}
 
-                            {(id) ?
+                            {/* {(id) ?
                                 <div className="form-group col-md-6">
                                     <label>Attendance</label>
                                     {this.newAttendance}
@@ -229,7 +484,18 @@ export default class ResidentEdit extends Component {
                                     <label>Attendance</label>
                                     <input name="attendance" type="text" onChange={this.handleChange} value={attendance} className="form-control" />
                                 </div>
-                            }
+                            } */}
+
+                            <div className='form-group col-md-12'>
+                                <Field
+                                    name='attendanceEdit'
+                                    programs={programs}
+                                    allPrograms={allPrograms}
+                                    allStatus={allStatus}
+                                    change={this.handleFieldChange}
+                                    component={AttendanceEdit}
+                                />
+                            </div>
 
                             <div className="form-group col-md-12">
                                 <div className='col-12 text-right'>
@@ -250,3 +516,24 @@ export default class ResidentEdit extends Component {
         )
     }
 }
+
+ResidentEdit = reduxForm({
+    form: 'attendanceEdit',
+    enableReinitialize: true,
+    destroyOnUnmount: true,
+    forceUnregisterOnUnmount: true,
+    keepDirtyOnReinitialize: true,
+    initialValues: {
+        programs: [],
+        allPrograms: [],
+        allStatus: []
+    }
+})(ResidentEdit);
+
+const mapStateToProps = (state) => {
+    return {
+        formValues: state.form.attendanceEdit ? state.form.attendanceEdit.values : null
+    }
+};
+
+export default connect(mapStateToProps)(ResidentEdit);
