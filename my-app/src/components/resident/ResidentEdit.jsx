@@ -125,7 +125,7 @@ class AttendanceEdit extends PureComponent {
                             style={{ padding: '0.4em', margin: '0.5em 0.5em 0 0' }}
                         >
                             <span style={{ cursor: 'pointer' }}>
-                                <b>Status:</b>{item.status} <br /><b>ProgramId:</b>{item.programId} {(item.author) ? <><br /><b>Author:</b>{item.author}</> : null}
+                                <b>Status: </b>{item.status} <br /><b>ProgramId: </b>{item.programId} {(item.author) ? <><br /><b>Author: </b>{item.author}</> : null}
                             </span> <i className='fas fa-times ml-2 pr-1'
                                 onClick={this.handleDeleteProgram(item)}
                                 title='Delete'
