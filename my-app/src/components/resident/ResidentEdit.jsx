@@ -2,6 +2,8 @@ import React, { Component, PureComponent } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
+const moment = window.moment;
+
 class AttendanceEdit extends PureComponent {
     state = {
         statusValue: '',
@@ -190,6 +192,7 @@ class AttendanceEdit extends PureComponent {
 }
 
 class ResidentEdit extends Component {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -261,6 +264,7 @@ class ResidentEdit extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         const id = this.props.match.params.id;
         if (id) {
             this.setState({
@@ -269,6 +273,10 @@ class ResidentEdit extends Component {
 
             this.loadResident(id);
         }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     handleChange = (event, callback) => {
@@ -367,9 +375,45 @@ class ResidentEdit extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.reset();
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
+        const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt } = this.state;
+        const { programs } = this.props.formValues;
+        const params = { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, programs };
+        
+        const answer = window.confirm("Are you sure you want to save?");
+        if (answer) {
+            fetch("https://welbi.org/api/residents", {
+                method: 'POST',
+                body: JSON.stringify(params), // data can be string or object
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': "Bearer 88a8ae6c-6b3e-400e-b052-48680a8aff14",
+                }
+            }).then(res => res.json()) // if response is json, for text use res.text()
+                .then((response) => {
+                    this.setState({
+                        dirty: false
+                    });
+                    if (response.id) {
+                        this.props.history.push('/resident/' + response.id + '/edit');
+                        this.setState({
+                            id: response.id
+                        });
+                    }
+                    else {
+                        this.props.history.push('/resident/');
+                    }
+                }) // if text, no need for JSON.stringify
+                .catch(error => console.error('Error:', error));
+        } else {
+            console.log("Data was not saved");
+        }
     }
 
 
@@ -377,12 +421,6 @@ class ResidentEdit extends Component {
         const { formValues } = this.props;
         const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, attendance, dirty } = this.state;
         const { programs, allPrograms, allStatus } = formValues ? formValues : {};
-        // let newAttendance = attendance.map((attendance) => {
-        //     return <div key={attendance.programId}>
-        //         <input name="attendance" type="text" onChange={this.handleChange} value={attendance.status + attendance.programId + attendance.author} className="form-control" />
-        //     </div>
-        // });
-
 
         return (
             <div className="card" id="card-new">
@@ -402,17 +440,17 @@ class ResidentEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Name</label>
-                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" />
+                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" required/>
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>First Name</label>
-                                <input name="firstName" type="text" onChange={this.handleChange} value={firstName} className="form-control" />
+                                <input name="firstName" type="text" onChange={this.handleChange} value={firstName} className="form-control" required/>
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Last Name</label>
-                                <input name="lastName" type="text" onChange={this.handleChange} value={lastName} className="form-control" />
+                                <input name="lastName" type="text" onChange={this.handleChange} value={lastName} className="form-control" required/>
                             </div>
 
                             <div className="form-group col-md-6">
@@ -432,17 +470,29 @@ class ResidentEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Room</label>
-                                <input name="room" type="text" onChange={this.handleChange} value={room} className="form-control" />
+                                <input name="room" type="text" onChange={this.handleChange} value={room} className="form-control" required/>
                             </div>
-
+                           
                             <div className="form-group col-md-6">
                                 <label>Level Of Care</label>
-                                <input name="levelOfCare" type="text" onChange={this.handleChange} value={levelOfCare} className="form-control" />
+                                <select name="levelOfCare" className="form-control" id="inputLevelOfCare" value={levelOfCare} onChange={this.handleChange} required>
+                                    <option value=""></option>
+                                    <option value="INDEPENDENT">INDEPENDENT</option>
+                                    <option value="ASSISTED">ASSISTED</option>
+                                    <option value="MEMORY">MEMORY</option>
+                                    <option value="LONGTERM">LONGTERM</option>
+                                </select>
                             </div>
-
+                            
                             <div className="form-group col-md-6">
                                 <label>Ambulation</label>
-                                <input name="ambulation" type="text" onChange={this.handleChange} value={ambulation} className="form-control" />
+                                <select name="ambulation" className="form-control" id="inputAmbulation" value={ambulation} onChange={this.handleChange} required>
+                                    <option value=""></option>
+                                    <option value="NOLIMITATIONS">NOLIMITATIONS</option>
+                                    <option value="CANE">CANE</option>
+                                    <option value="WALKER">WALKER</option>
+                                    <option value="WHEELCHAIR">WHEELCHAIR</option>
+                                </select>
                             </div>
 
                             <div className="form-group col-md-6">
@@ -452,39 +502,27 @@ class ResidentEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Birth Date</label>
-                                <input name="birthDate" type="text" onChange={this.handleChange} value={birthDate} className="form-control" />
+                                <input name="birthDate" type="datetime-local" onChange={this.handleChange} value={moment(birthDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required/>
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Move In Date</label>
-                                <input name="moveInDate" type="text" onChange={this.handleChange} value={moveInDate} className="form-control" />
+                                <input name="moveInDate" type="datetime-local" onChange={this.handleChange} value={moment(moveInDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required/>
                             </div>
 
                             {(id) ?
                                 <>
                                     <div className="form-group col-md-6">
                                         <label>Created At</label>
-                                        <input name="createdAt" type="text" onChange={this.handleChange} value={createdAt} className="form-control" />
+                                        <input name="createdAt" type="text" disabled onChange={this.handleChange} value={moment(createdAt).format('YYYY-MM-DD, hh:mm:ss A')} className="form-control" />
                                     </div>
 
                                     <div className="form-group col-md-6">
                                         <label>Updated At</label>
-                                        <input name="updatedAt" type="text" onChange={this.handleChange} value={updatedAt} className="form-control" />
+                                        <input name="updatedAt" type="text" disabled onChange={this.handleChange} value={moment(updatedAt).format('YYYY-MM-DD, hh:mm:ss A')} className="form-control" />
                                     </div>
                                 </>
                                 : ''}
-
-                            {/* {(id) ?
-                                <div className="form-group col-md-6">
-                                    <label>Attendance</label>
-                                    {this.newAttendance}
-                                </div>
-                                :
-                                <div className="form-group col-md-6">
-                                    <label>Attendance</label>
-                                    <input name="attendance" type="text" onChange={this.handleChange} value={attendance} className="form-control" />
-                                </div>
-                            } */}
 
                             <div className='form-group col-md-12'>
                                 <Field

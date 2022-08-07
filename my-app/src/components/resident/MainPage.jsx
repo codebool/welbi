@@ -5,9 +5,6 @@ export default class MainPage extends Component {
     constructor(props) {
         super(props);
         this.listRef = React.createRef();
-        this.state = {
-            resident: '',
-        }
     }
 
     handleReload = () => {
@@ -17,7 +14,7 @@ export default class MainPage extends Component {
     render() {
         return (
             <div>
-                <ResidentList ref={this.listRef} {...this.props} filterValues={{ resident: this.state.resident }} />
+                <ResidentList ref={this.listRef} {...this.props} />
             </div>
         )
     }
