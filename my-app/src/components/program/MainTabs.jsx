@@ -6,14 +6,19 @@ export default class MainTabs extends Component {
     renderMenu = () => {
         return (
             <>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program' className='nav-link' activeClassName='active'>
+                <li className='nav-item'>
+                    <NavLink to='/program' exact={true} className='nav-link' activeClassName='active'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Programs</label>
                     </NavLink>
                 </li>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program/add' className='nav-link' activeClassName='active'>
-                        <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Programs</label>
+                <li className='nav-item'>
+                    <NavLink to='/program/add' exact={true} className='nav-link' activeClassName='active' >
+                        <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Program</label>
+                    </NavLink>
+                </li>
+                <li className='nav-item'>
+                    <NavLink to='/' exact={true} className='nav-link' activeClassName='active' >
+                        <i className='fas fa-home' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>Main Page</label>
                     </NavLink>
                 </li>
             </>
@@ -23,20 +28,20 @@ export default class MainTabs extends Component {
     renderEditMenu = (id) => {
         return (
             <>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program' className='nav-link' activeClassName='active'>
+                <li className='nav-item'>
+                    <NavLink to='/program' exact={true} className='nav-link' activeClassName='active'>
                         <i className='fas fa-list' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>All Programs</label>
                     </NavLink>
                 </li>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to={`/program/${id}/edit`} className='nav-link' activeClassName='active'>
+                <li className='nav-item'>
+                    <NavLink to={`/program/${id}/edit`} exact={true} className='nav-link' activeClassName='active'>
                         <i className='fas fa-info' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>Details</label>
                     </NavLink>
                 </li>
-                <li className='nav-item' id='nav-item-list'>
-                    <NavLink to='/program/add' className='nav-link' activeClassName='active'>
-                        <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Programs</label>
-                    </NavLink>
+                <li className='nav-item'>
+                    <NavLink to='/program/add' exact={true} className='nav-link' activeClassName='active'>
+                        <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Program</label>
+                    </NavLink   >
                 </li>
             </>
         )
@@ -46,7 +51,7 @@ export default class MainTabs extends Component {
         let id, edit;
         let editRes, idRes;
         if(this.props.location) {
-            let editRegex = /\/([a-z0-9-]{36})/;
+            let editRegex = /\/([a-z0-9\-]{36})/;
             editRes = this.props.location.pathname.match(editRegex);
             if(editRes && editRes[1]) {
                 edit = editRes[1];
@@ -57,7 +62,7 @@ export default class MainTabs extends Component {
             if(idRes && idRes[1]) {
                 id = parseInt(idRes[1]);
             }
-        }
+        }   
 
         return (
             <ul className='nav nav-tabs'>

@@ -116,7 +116,7 @@ export default class ResidentList extends Component {
                     'visible': true,
                     'searchable': false,
                     'render': (data, type, row, meta) => {
-                        const listItems = data.map((i) => <li key={i.programId}><i><small><b>Status:</b> {i.status} <b>Program ID:</b> {i.programId} <b>Author:</b> {i.author ? i.author : ''}</small></i></li>);
+                        const listItems = data.map((i) => <li key={i.programId}><i><small><b>Status:</b> {i.status} <br /><b>Program ID:</b> {i.programId} <br /><b>Author:</b> {i.author ? i.author : ''}</small></i></li>);
 
                         return ReactDOMServer.renderToStaticMarkup(
                             <div>

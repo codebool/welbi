@@ -16,6 +16,11 @@ export default class MainTabs extends Component {
                         <i className='fas fa-plus' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>New Resident</label>
                     </NavLink>
                 </li>
+                <li className='nav-item'>
+                    <NavLink to='/' exact={true} className='nav-link' activeClassName='active' >
+                        <i className='fas fa-home' /><label className='d-none d-sm-inline' style={{marginLeft: 5}}>Main Page</label>
+                    </NavLink>
+                </li>
             </>
         )
     }

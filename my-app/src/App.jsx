@@ -31,18 +31,12 @@ export default class App extends Component {
                         <Route path="/resident" exact component={ResidentMainPage}></Route>
                         <Route path='/resident/add' component={ResidentEdit}></Route>
                         <Route path='/resident/:id/edit' component={ResidentEdit}></Route>
+
+                        <Route path="/program" component={ProgramMainTabs}></Route>
+                        <Route path="/program" exact component={ProgramMainPage}></Route>
+                        <Route path='/program/add' component={ProgramEdit}></Route>
+                        <Route path='/program/:id/edit' component={ProgramEdit}></Route>
                     </div>
-
-
-
-                    {/* <Route path="/resident" component={[<ResidentMainTabs />, <ResidentMainPage />]}></Route>
-                    <Route path="/resident/add" component={[<ResidentEdit />]}></Route>
-                    <Route path="/resident/:id/edit" component={<ResidentEdit />}></Route>
-
-                    <Route path="/program" component={[<ProgramMainTabs />, <ProgramMainPage />]}></Route>
-                    <Route path="/program/add" component={<ProgramEdit />}></Route>
-                    <Route path="/program/:id/edit" component={<ProgramEdit />}></Route>  */}
-
                 </Router>
             </Provider>
         );
