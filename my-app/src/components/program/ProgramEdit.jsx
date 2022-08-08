@@ -210,7 +210,7 @@ class ProgramEdit extends Component {
             id: this.props.match.params.id ? this.props.match.params.id : '',
             name: '',
             location: '',
-            allDay: '',
+            allDay: false,
             start: '',
             end: '',
             tags: '',
@@ -302,10 +302,10 @@ class ProgramEdit extends Component {
     handleChange = (event, callback) => {
         let fieldDetails = { dirty: true };
 
-        if (event.target.name === 'hobbies') {
+        if (event.target.name === 'hobbies' || event.target.name === 'facilitators' || event.target.name === 'tags') {
             fieldDetails[event.target.name] = event.target.value.split(',');
         }
-        else if (event.target.name === 'isRepeated') {
+        else if (event.target.name === 'isRepeated' || event.target.name === 'allDay') {
             if (event.target.value === 'true') {
                 fieldDetails[event.target.name] = true;
             }
@@ -405,7 +405,7 @@ class ProgramEdit extends Component {
             this.setState({
                 name: '',
                 location: '',
-                allDay: '',
+                allDay: false,
                 start: '',
                 end: '',
                 tags: '',
@@ -490,46 +490,45 @@ class ProgramEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Name</label>
-                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" />
+                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Location</label>
-                                <input name="location" type="text" onChange={this.handleChange} value={location} className="form-control" />
+                                <input name="location" type="text" onChange={this.handleChange} value={location} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>All Day?</label>
-                                <select name="allDay" className="form-control" id="inputAllDay" value={allDay} onChange={this.handleChange}>
-                                    <option value=""></option>
-                                    <option value="true">true</option>
+                                <select name="allDay" className="form-control" id="inputAllDay" value={allDay} onChange={this.handleChange} required>
                                     <option value="false">false</option>
+                                    <option value="true">true</option>
                                 </select>
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Start</label>
-                                <input name="start" type="datetime-local" onChange={this.handleChange} value={moment(start).format('YYYY-MM-DDTkk:mm')} className="form-control" />
+                                <input name="start" type="datetime-local" onChange={this.handleChange} value={moment(start).format('YYYY-MM-DDTkk:mm')} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>End</label>
-                                <input name="end" type="datetime-local" onChange={this.handleChange} value={moment(end).format('YYYY-MM-DDTkk:mm')} className="form-control" />
+                                <input name="end" type="datetime-local" onChange={this.handleChange} value={moment(end).format('YYYY-MM-DDTkk:mm')} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Tags</label>
-                                <input name="tags" type="text" onChange={this.handleChange} value={tags} className="form-control" />
+                                <input name="tags" type="text" onChange={this.handleChange} value={tags} className="form-control" placeholder="tag1,tag2,tag3" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Dimension</label>
-                                <input name="dimension" type="text" onChange={this.handleChange} value={dimension} className="form-control" />
+                                <input name="dimension" type="text" onChange={this.handleChange} value={dimension} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Facilitators</label>
-                                <input name="facilitators" type="text" onChange={this.handleChange} value={facilitators} className="form-control" />
+                                <input name="facilitators" type="text" onChange={this.handleChange} value={facilitators} className="form-control" placeholder="facilitator1,facilitator2,facilitator3" required />
                             </div>
 
                             <div className="form-group col-md-6">

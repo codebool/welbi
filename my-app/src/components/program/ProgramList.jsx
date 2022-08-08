@@ -87,17 +87,9 @@ export default class ProgramList extends Component {
                         }
                         return '';
                     }
-                },
-                {
-                    'targets': [6],
-                    'visible': true,
-                    'searchable': true,
-                    'render': (data, type, row, meta) => {
-                        return (data.length) ? data : '-';
-                    }
                 },   
                 {
-                    'targets': [8, 9, 10],
+                    'targets': [6, 8, 9, 10],
                     'visible': true,
                     'searchable': false,
                     'render': (data, type, row, meta) => {
