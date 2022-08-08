@@ -73,7 +73,7 @@ export default class ProgramList extends Component {
                 { data: 'levelOfCare', name: 'levelOfCare', title: 'Level Of Care' },
                 { data: 'hobbies', name: 'hobbies', title: 'Hobbies' },
                 { data: 'isRepeated', name: 'isRepeated', title: 'Is Repeated' },
-                { data: 'attendance', name: 'attendance', title: 'Attendance', visible: false },
+                { data: 'attendance', name: 'attendance', title: 'Attendance' },
                 { data: null, title: 'Actions' }
             ],
             'columnDefs': [

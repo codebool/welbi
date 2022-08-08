@@ -429,6 +429,27 @@ class ProgramEdit extends Component {
         this.props.reset();
     }
 
+    attendResidentToProgram = (programId, residents) => {
+        if (residents.length) {
+            residents.map((resident) => {
+                fetch("https://welbi.org/api/programs/" + this.state.id + "/attend", {
+                    method: 'POST',
+                    body: JSON.stringify(resident), // data can be string or object
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': "Bearer 88a8ae6c-6b3e-400e-b052-48680a8aff14",
+                    }
+                }).then(res => res.json()) // if response is json, for text use res.text()
+                    .then((response) => {
+                        this.setState({
+                            dirty: false
+                        });
+                    }) // if text, no need for JSON.stringify
+                    .catch(error => console.error('Error:', error));
+            })
+        }
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -451,10 +472,11 @@ class ProgramEdit extends Component {
                         dirty: false
                     });
                     if (response.id) {
-                        this.props.history.push('/program/' + response.id + '/edit');
                         this.setState({
                             id: response.id
                         });
+                        this.attendResidentToProgram(id, residents);
+                        this.props.history.push('/program/');
                     }
                     else {
                         this.props.history.push('/program/');
