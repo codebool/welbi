@@ -459,6 +459,7 @@ class ProgramEdit extends Component {
 
         const answer = window.confirm("Are you sure you want to save?");
         if (answer) {
+            // this is the API only for creating new program, will need one which for updating the existing program
             fetch("https://welbi.org/api/programs", {
                 method: 'POST',
                 body: JSON.stringify(params), // data can be string or object
