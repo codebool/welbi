@@ -272,14 +272,14 @@ class ProgramEdit extends Component {
 
     addObjToArr = (arr) => {
         const result = [];
-        
+
         arr.map((item) => {
             const obj = {};
             obj["label"] = item;
             obj["value"] = item;
             result.push(obj);
         });
-        
+
         return result;
     }
 
@@ -325,11 +325,16 @@ class ProgramEdit extends Component {
     }
 
     handleLevelOfCareChange = (value) => {
+        const { id, levelOfCare } = this.state;
         let arr = [];
-
-        value.map((item) => {
-            arr.push(item.value);
-        });
+        if (id && levelOfCare) {
+            arr = value;
+        }
+        else {
+            value.map((item) => {
+                arr.push(item.value);
+            });
+        }
 
         this.setState({
             levelOfCare: arr,
@@ -466,7 +471,7 @@ class ProgramEdit extends Component {
         const { formValues } = this.props;
         const { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated, attendance, dirty } = this.state;
         const { residents, allResidents, allStatus } = formValues ? formValues : {};
-        console.log(this.state.levelOfCare);
+
         return (
             <div className="card" id="card-new">
                 <div className="card-body">
@@ -529,15 +534,28 @@ class ProgramEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Level Of Care</label>
-                                <Select
-                                    name="levelOfCare"
-                                    closeMenuOnSelect={false}
-                                    components={animatedComponents}
-                                    value={this.state.levelOfCare}
-                                    isMulti
-                                    options={levelOfCareOptions}
-                                    onChange={this.handleLevelOfCareChange}
-                                />
+
+                                {(id) ?
+                                    <Select
+                                        name="levelOfCare"
+                                        closeMenuOnSelect={false}
+                                        components={animatedComponents}
+                                        value={levelOfCare}
+                                        isMulti
+                                        options={levelOfCareOptions}
+                                        onChange={this.handleLevelOfCareChange}
+                                    />
+                                    :
+                                    <Select
+                                        name="levelOfCare"
+                                        closeMenuOnSelect={false}
+                                        components={animatedComponents}
+                                        defaultValue={[]}
+                                        isMulti
+                                        options={levelOfCareOptions}
+                                        onChange={this.handleLevelOfCareChange}
+                                    />
+                                }
                             </div>
 
                             <div className="form-group col-md-6">
