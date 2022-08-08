@@ -7,7 +7,7 @@ const moment = window.moment;
 class AttendanceEdit extends PureComponent {
     state = {
         statusValue: '',
-        programIdValue: '',
+        residentIdValue: '',
         authorValue: '',
         error: '',
         loading: false,
@@ -15,15 +15,15 @@ class AttendanceEdit extends PureComponent {
     }
 
     static defaultProps = {
-        programs: [],
-        allPrograms: [],
+        residents: [],
+        allResidents: [],
         allStatus: []
     }
 
-    handleDeleteProgram = (program) => () => {
-        const { programs, change } = this.props;
-        const newPrograms = programs.filter(oldProgram => oldProgram.programId !== program.programId);
-        change('programs', newPrograms);
+    handleDeleteResident = (resident) => () => {
+        const { residents, change } = this.props;
+        const newResidents = residents.filter(oldResident => oldResident.residentId !== resident.residentId);
+        change('residents', newResidents);
     }
 
     handleCancel = (e) => {
@@ -36,9 +36,9 @@ class AttendanceEdit extends PureComponent {
         this.setState({ statusValue: e.target.value, error: '' });
     }
 
-    handleProgramIdChange = (e) => {
+    handleResidentIdChange = (e) => {
         e.preventDefault();
-        this.setState({ programIdValue: e.target.value, error: '' });
+        this.setState({ residentIdValue: e.target.value, error: '' });
     }
 
     handleAuthorChange = (e) => {
@@ -46,7 +46,7 @@ class AttendanceEdit extends PureComponent {
         this.setState({ authorValue: e.target.value, error: '' });
     }
 
-    loadPrograms = () => {
+    loadResidents = () => {
         this.setState({ loading: true });
         this.props.change('allStatus', [
             { value: 'Active', label: 'Active' },
@@ -55,7 +55,7 @@ class AttendanceEdit extends PureComponent {
             { value: 'Undefined', label: 'Undefined' }
         ]);
 
-        fetch("https://welbi.org/api/programs", {
+        fetch("https://welbi.org/api/residents", {
             method: 'GET',
             // body: JSON.stringify(data), // data can be string or object
             headers: {
@@ -64,7 +64,7 @@ class AttendanceEdit extends PureComponent {
             }
         }).then(res => res.json()) // if response is json, for text use res.text()
             .then((response) => {
-                this.props.change('allPrograms', response);
+                this.props.change('allResidents', response);
                 this.setState({ loading: false });
             }) // if text, no need for JSON.stringify
             .catch((e) => {
@@ -73,46 +73,46 @@ class AttendanceEdit extends PureComponent {
             });
     }
 
-    handleShowProgramInput = () => {
+    handleShowResidentInput = () => {
         this.setState({
             showInput: true,
             error: '',
             statusValue: '',
-            programIdValue: '',
+            residentIdValue: '',
             authorValue: ''
         });
-        this.loadPrograms();
+        this.loadResidents();
     }
 
-    handleProgramSubmit = (e) => {
+    handleResidentSubmit = (e) => {
         e.preventDefault();
-        const { change, programs } = this.props;
+        const { change, residents } = this.props;
         const status = this.state.statusValue;
-        const programId = this.state.programIdValue;
+        const residentId = this.state.residentIdValue;
         const author = this.state.authorValue;
-        const programObject = {
+        const residentObject = {
             status: status,
-            programId: programId,
+            residentId: residentId,
             author: author
         }
 
-        if (programs.length && programs.map(program => program.programId).includes(programId)) {
-            this.setState({ error: 'Program already exists' });
+        if (residents.length && residents.map(resident => resident.residentId).includes(residentId)) {
+            this.setState({ error: 'Resident already exists' });
         }
         else if (status === '') {
             this.setState({ error: 'Status is required' });
         }
-        else if (programId === '') {
-            this.setState({ error: 'Program ID is required' });
+        else if (residentId === '') {
+            this.setState({ error: 'Resident ID is required' });
         }
-        else if (programObject) {
-            change('programs', [...programs, programObject]);
+        else if (residentObject) {
+            change('residents', [...residents, residentObject]);
             this.setState({ showInput: false });
         }
     }
 
     render() {
-        const { programs, allPrograms, allStatus } = this.props;
+        const { residents, allResidents, allStatus } = this.props;
         const { showInput, error } = this.state;
         return (
             <>
@@ -121,15 +121,15 @@ class AttendanceEdit extends PureComponent {
                     {error ? <small className='text-danger ml-3'>{this.state.error}</small> : null}
                 </label>
                 <div className='form-group form-inline'>
-                    {(programs && programs.length) ? programs.map((item, index) =>
+                    {(residents && residents.length) ? residents.map((item, index) =>
                         <span className='bg-light text-dark rounded'
                             key={index}
                             style={{ padding: '0.4em', margin: '0.5em 0.5em 0 0' }}
                         >
                             <span style={{ cursor: 'pointer' }}>
-                                <b>Status: </b>{item.status} <br /><b>ProgramId: </b>{item.programId} {(item.author) ? <><br /><b>Author: </b>{item.author}</> : null}
+                                <b>Status: </b>{item.status} <br /><b>ResidentId: </b>{item.residentId} {(item.author) ? <><br /><b>Author: </b>{item.author}</> : null}
                             </span> <i className='fas fa-times ml-2 pr-1'
-                                onClick={this.handleDeleteProgram(item)}
+                                onClick={this.handleDeleteResident(item)}
                                 title='Delete'
                                 style={{ cursor: 'pointer' }} />
                         </span>)
@@ -139,20 +139,20 @@ class AttendanceEdit extends PureComponent {
                             <div className='form-group'>
                                 <input className='form-control'
                                     type='text'
-                                    list='program-status'
+                                    list='resident-status'
                                     onChange={this.handleStatusChange}
                                     disabled={this.state.loading}
                                     value={this.state.statusValue}
                                     placeholder='select/enter a status'
                                 />
-                                <datalist id='program-status'>
+                                <datalist id='resident-status'>
                                     {allStatus.map((item, index) => <option key={index} value={item.value} />)}
                                 </datalist>
 
                                 <label className="form-control-label"></label>
-                                <select name="programs" id="programs" className="form-control" value={this.state.programIdValue} onChange={this.handleProgramIdChange}>
-                                    <option value="" disabled hidden>Select a program</option>
-                                    {allPrograms ? allPrograms.map((item, index) => {
+                                <select name="residents" id="residents" className="form-control" value={this.state.residentIdValue} onChange={this.handleResidentIdChange}>
+                                    <option value="" disabled hidden>Select a resident</option>
+                                    {allResidents ? allResidents.map((item, index) => {
                                         return <option key={index} value={item.id}>{item.id} - {item.name}</option>
                                     }) : null}
                                 </select>
@@ -167,7 +167,7 @@ class AttendanceEdit extends PureComponent {
                                         <i className='fas fa-spinner fa-pulse text-warning' style={{ fontSize: '2rem' }} />
                                     </div>
                                     :
-                                    <button className='btn btn-success ml-1' type='button' onClick={this.handleProgramSubmit}>
+                                    <button className='btn btn-success ml-1' type='button' onClick={this.handleResidentSubmit}>
                                         <i className='fas fa-check' title='Confirm' />
                                     </button>
                                 }
@@ -178,7 +178,7 @@ class AttendanceEdit extends PureComponent {
                                     : null}
                             </div>
                             :
-                            <button className='btn btn-secondary' type='button' onClick={this.handleShowProgramInput}>
+                            <button className='btn btn-secondary' type='button' onClick={this.handleShowResidentInput}>
                                 <i className='fas fa-plus'
                                     title='Add New Attendance'
                                 />
@@ -198,18 +198,16 @@ class ProgramEdit extends Component {
         this.state = {
             id: this.props.match.params.id ? this.props.match.params.id : '',
             name: '',
-            firstName: '',
-            lastName: '',
-            preferredName: '',
-            status: '',
-            room: '',
-            levelOfCare: '',
-            ambulation: '',
-            author: '',
-            birthDate: '',
-            moveInDate: '',
-            createdAt: '',
-            updatedAt: '',
+            location: '',
+            allDay: '',
+            start: '',
+            end: '',
+            tags: '',
+            dimension: '',
+            facilitators: '',
+            levelOfCare: [],
+            hobbies: [],
+            isRepeated: false,
             attendance: [],
             dirty: false
         };
@@ -225,9 +223,9 @@ class ProgramEdit extends Component {
         return {};
     }
 
-    loadResident = (id) => {
+    loadProgram = (id) => {
         const { initialize } = this.props;
-        fetch("https://welbi.org/api/residents", {
+        fetch("https://welbi.org/api/programs", {
             method: 'GET',
             // body: JSON.stringify(data), // data can be string or object
             headers: {
@@ -239,23 +237,21 @@ class ProgramEdit extends Component {
                 response.find((response) => {
                     if (response.id === id) {
                         initialize({
-                            programs: response.attendance
+                            residents: response.attendance
                         });
                         this.setState({
                             name: response.name,
-                            firstName: response.firstName,
-                            lastName: response.lastName,
-                            preferredName: response.preferredName,
-                            status: response.status,
-                            room: response.room,
-                            levelOfCare: response.levelOfCare ? response.levelOfCare : '',
-                            ambulation: response.ambulation ? response.ambulation : '',
-                            author: response.author ? response.author : '',
-                            birthDate: this.parseObject(response.birthDate),
-                            moveInDate: this.parseObject(response.moveInDate),
-                            createdAt: this.parseObject(response.createdAt),
-                            updatedAt: this.parseObject(response.updatedAt),
-                            attendance: response.attendance,
+                            location: response.location,
+                            allDay: response.allDay,
+                            start: response.start,
+                            end: response.end,
+                            tags: response.tags ? response.tags : '',
+                            dimension: response.dimension ? response.dimension : '',
+                            facilitators: response.facilitators ? response.facilitators : '',
+                            levelOfCare: response.levelOfCare ? response.levelOfCare : [],
+                            hobbies: response.hobbies ? response.hobbies : [],
+                            isRepeated: response.isRepeated,
+                            attendance: response.attendance
                         });
                     }
                 });
@@ -271,7 +267,7 @@ class ProgramEdit extends Component {
                 id: id
             });
 
-            this.loadResident(id);
+            this.loadProgram(id);
         }
     }
 
@@ -282,7 +278,21 @@ class ProgramEdit extends Component {
     handleChange = (event, callback) => {
         let fieldDetails = { dirty: true };
 
-        fieldDetails[event.target.name] = event.target.value;
+        if (event.target.name === 'hobbies') {
+            fieldDetails[event.target.name] = event.target.value.split(',');
+        }
+        else if (event.target.name === 'isRepeated') {
+            if (event.target.value === 'true') {
+                fieldDetails[event.target.name] = true;
+            }
+            else {
+                fieldDetails[event.target.name] = false;
+            }
+        }
+        else {
+            fieldDetails[event.target.name] = event.target.value;
+        }
+
         this.setState(fieldDetails, () => {
             if (typeof callback == 'function') {
                 callback();
@@ -293,7 +303,7 @@ class ProgramEdit extends Component {
     handleFieldChange = (field, value) => {
         this.props.change(field, value);
 
-        if (field === 'programs') {
+        if (field === 'residents') {
             this.setState({
                 dirty: true
             });
@@ -304,12 +314,12 @@ class ProgramEdit extends Component {
         e.preventDefault();
 
         const { initialize, formValues } = this.props;
-        const { allPrograms, allStatus } = formValues ? formValues : {};
+        const { allResidents, allStatus } = formValues ? formValues : {};
 
         let id = this.props.match.params.id;
 
         if (id) {
-            fetch("https://welbi.org/api/residents", {
+            fetch("https://welbi.org/api/programs", {
                 method: 'GET',
                 // body: JSON.stringify(data), // data can be string or object
                 headers: {
@@ -321,25 +331,23 @@ class ProgramEdit extends Component {
                     response.find((response) => {
                         if (response.id === id) {
                             initialize({
-                                programs: response.attendance,
-                                allPrograms: allPrograms,
+                                residents: response.attendance,
+                                allResidents: allResidents,
                                 allStatus: allStatus
                             });
                             this.setState({
                                 name: response.name,
-                                firstName: response.firstName,
-                                lastName: response.lastName,
-                                preferredName: response.preferredName,
-                                status: response.status,
-                                room: response.room,
-                                levelOfCare: response.levelOfCare ? response.levelOfCare : '',
-                                ambulation: response.ambulation ? response.ambulation : '',
-                                author: response.author ? response.author : '',
-                                birthDate: this.parseObject(response.birthDate),
-                                moveInDate: this.parseObject(response.moveInDate),
-                                createdAt: this.parseObject(response.createdAt),
-                                updatedAt: this.parseObject(response.updatedAt),
-                                attendance: response.attendance,
+                                location: response.location,
+                                allDay: response.allDay,
+                                start: response.start,
+                                end: response.end,
+                                tags: response.tags ? response.tags : '',
+                                dimension: response.dimension ? response.dimension : '',
+                                facilitators: response.facilitators ? response.facilitators : '',
+                                levelOfCare: response.levelOfCare ? response.levelOfCare : [],
+                                hobbies: response.hobbies ? response.hobbies : [],
+                                isRepeated: response.isRepeated,
+                                attendance: response.attendance
                             });
 
                         }
@@ -352,24 +360,22 @@ class ProgramEdit extends Component {
         } else {
             this.setState({
                 name: '',
-                firstName: '',
-                lastName: '',
-                preferredName: '',
-                status: '',
-                room: '',
-                levelOfCare: '',
-                ambulation: '',
-                author: '',
-                birthDate: '',
-                moveInDate: '',
-                createdAt: '',
-                updatedAt: '',
+                location: '',
+                allDay: '',
+                start: '',
+                end: '',
+                tags: '',
+                dimension: '',
+                facilitators: '',
+                levelOfCare: [],
+                hobbies: [],
+                isRepeated: false,
                 attendance: [],
                 dirty: false
             });
             initialize({
-                programs: [],
-                allPrograms: allPrograms,
+                residents: [],
+                allResidents: allResidents,
                 allStatus: allStatus
             })
         }
@@ -382,13 +388,13 @@ class ProgramEdit extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt } = this.state;
-        const { programs } = this.props.formValues;
-        const params = { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, programs };
-        
+        const { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated } = this.state;
+        const { residents } = this.props.formValues;
+        const params = { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated, residents };
+
         const answer = window.confirm("Are you sure you want to save?");
         if (answer) {
-            fetch("https://welbi.org/api/residents", {
+            fetch("https://welbi.org/api/programs", {
                 method: 'POST',
                 body: JSON.stringify(params), // data can be string or object
                 headers: {
@@ -401,13 +407,13 @@ class ProgramEdit extends Component {
                         dirty: false
                     });
                     if (response.id) {
-                        this.props.history.push('/resident/' + response.id + '/edit');
+                        this.props.history.push('/program/' + response.id + '/edit');
                         this.setState({
                             id: response.id
                         });
                     }
                     else {
-                        this.props.history.push('/resident/');
+                        this.props.history.push('/program/');
                     }
                 }) // if text, no need for JSON.stringify
                 .catch(error => console.error('Error:', error));
@@ -419,8 +425,8 @@ class ProgramEdit extends Component {
 
     render() {
         const { formValues } = this.props;
-        const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, attendance, dirty } = this.state;
-        const { programs, allPrograms, allStatus } = formValues ? formValues : {};
+        const { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated, attendance, dirty } = this.state;
+        const { residents, allResidents, allStatus } = formValues ? formValues : {};
 
         return (
             <div className="card" id="card-new">
@@ -429,50 +435,59 @@ class ProgramEdit extends Component {
                         <div className="form-row">
                             {(id) ?
                                 <div className=" form-group col-md-12">
-                                    <label>Edit Resident Id : </label>&nbsp;&nbsp;
+                                    <label>Edit Program Id : </label>&nbsp;&nbsp;
                                     <strong>{id}</strong>
                                 </div>
                                 :
                                 <div className=" form-group col-md-12">
-                                    <label>Add New Resident</label>&nbsp;&nbsp;
+                                    <label>Add New Program</label>&nbsp;&nbsp;
                                 </div>
                             }
 
                             <div className="form-group col-md-6">
                                 <label>Name</label>
-                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" required/>
+                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" />
                             </div>
 
                             <div className="form-group col-md-6">
-                                <label>First Name</label>
-                                <input name="firstName" type="text" onChange={this.handleChange} value={firstName} className="form-control" required/>
+                                <label>Location</label>
+                                <input name="location" type="text" onChange={this.handleChange} value={location} className="form-control" />
                             </div>
 
                             <div className="form-group col-md-6">
-                                <label>Last Name</label>
-                                <input name="lastName" type="text" onChange={this.handleChange} value={lastName} className="form-control" required/>
-                            </div>
-
-                            <div className="form-group col-md-6">
-                                <label>Preferred Name</label>
-                                <input name="preferredName" type="text" onChange={this.handleChange} value={preferredName} className="form-control" />
-                            </div>
-
-                            <div className="form-group col-md-6">
-                                <label>Status</label>
-                                <select name="status" className="form-control" id="inputStatus" value={status} onChange={this.handleChange}>
+                                <label>All Day?</label>
+                                <select name="allDay" className="form-control" id="inputAllDay" value={allDay} onChange={this.handleChange}>
                                     <option value=""></option>
-                                    <option value="HERE">HERE</option>
-                                    <option value="LOA">LOA</option>
-                                    <option value="ISOLATION">ISOLATION</option>
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
                                 </select>
                             </div>
 
                             <div className="form-group col-md-6">
-                                <label>Room</label>
-                                <input name="room" type="text" onChange={this.handleChange} value={room} className="form-control" required/>
+                                <label>Start</label>
+                                <input name="start" type="datetime-local" onChange={this.handleChange} value={moment(start).format('YYYY-MM-DDTkk:mm')} className="form-control" />
                             </div>
-                           
+
+                            <div className="form-group col-md-6">
+                                <label>End</label>
+                                <input name="end" type="datetime-local" onChange={this.handleChange} value={moment(end).format('YYYY-MM-DDTkk:mm')} className="form-control" />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Tags</label>
+                                <input name="tags" type="text" onChange={this.handleChange} value={tags} className="form-control" />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Dimension</label>
+                                <input name="dimension" type="text" onChange={this.handleChange} value={dimension} className="form-control" />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Facilitators</label>
+                                <input name="facilitators" type="text" onChange={this.handleChange} value={facilitators} className="form-control" />
+                            </div>
+
                             <div className="form-group col-md-6">
                                 <label>Level Of Care</label>
                                 <select name="levelOfCare" className="form-control" id="inputLevelOfCare" value={levelOfCare} onChange={this.handleChange} required>
@@ -483,52 +498,25 @@ class ProgramEdit extends Component {
                                     <option value="LONGTERM">LONGTERM</option>
                                 </select>
                             </div>
-                            
+
                             <div className="form-group col-md-6">
-                                <label>Ambulation</label>
-                                <select name="ambulation" className="form-control" id="inputAmbulation" value={ambulation} onChange={this.handleChange} required>
-                                    <option value=""></option>
-                                    <option value="NOLIMITATIONS">NOLIMITATIONS</option>
-                                    <option value="CANE">CANE</option>
-                                    <option value="WALKER">WALKER</option>
-                                    <option value="WHEELCHAIR">WHEELCHAIR</option>
+                                <label>Hobbies</label>
+                                <input name="hobbies" type="text" onChange={this.handleChange} value={hobbies} className="form-control" placeholder="hobbies1, hobbies2, hobbies3" required />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Is Repeated?</label>
+                                <select name="isRepeated" className="form-control" id="inputIsRepeated" value={isRepeated} onChange={this.handleChange} required>
+                                    <option value="false">false</option>
+                                    <option value="true">true</option>
                                 </select>
                             </div>
-
-                            <div className="form-group col-md-6">
-                                <label>Author</label>
-                                <input name="author" type="text" onChange={this.handleChange} value={author} className="form-control" />
-                            </div>
-
-                            <div className="form-group col-md-6">
-                                <label>Birth Date</label>
-                                <input name="birthDate" type="datetime-local" onChange={this.handleChange} value={moment(birthDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required/>
-                            </div>
-
-                            <div className="form-group col-md-6">
-                                <label>Move In Date</label>
-                                <input name="moveInDate" type="datetime-local" onChange={this.handleChange} value={moment(moveInDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required/>
-                            </div>
-
-                            {(id) ?
-                                <>
-                                    <div className="form-group col-md-6">
-                                        <label>Created At</label>
-                                        <input name="createdAt" type="text" disabled onChange={this.handleChange} value={moment(createdAt).format('YYYY-MM-DD, hh:mm:ss A')} className="form-control" />
-                                    </div>
-
-                                    <div className="form-group col-md-6">
-                                        <label>Updated At</label>
-                                        <input name="updatedAt" type="text" disabled onChange={this.handleChange} value={moment(updatedAt).format('YYYY-MM-DD, hh:mm:ss A')} className="form-control" />
-                                    </div>
-                                </>
-                                : ''}
 
                             <div className='form-group col-md-12'>
                                 <Field
                                     name='attendanceEdit'
-                                    programs={programs}
-                                    allPrograms={allPrograms}
+                                    residents={residents}
+                                    allResidents={allResidents}
                                     allStatus={allStatus}
                                     change={this.handleFieldChange}
                                     component={AttendanceEdit}
@@ -562,8 +550,8 @@ ProgramEdit = reduxForm({
     forceUnregisterOnUnmount: true,
     keepDirtyOnReinitialize: true,
     initialValues: {
-        programs: [],
-        allPrograms: [],
+        residents: [],
+        allResidents: [],
         allStatus: []
     }
 })(ProgramEdit);

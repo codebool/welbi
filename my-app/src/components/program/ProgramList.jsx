@@ -40,7 +40,7 @@ export default class ProgramList extends Component {
                 }).then(res => res.json()) // if response is json, for text use res.text()
                     .then((response) => {
                         // console.log('Response:', JSON.stringify(response));
-                        console.log('Response:', response)
+                        // console.log('Response:', response)
                         // this.setState({ residents: response, isLoading: false });
                         if (response) {
                             callback({
@@ -60,37 +60,6 @@ export default class ProgramList extends Component {
                     });
             },
             'order': [[0, 'asc']],
-            // {
-            //     "id": "109",
-            //     "name": "Debate",
-            //     "location": "Gymnasium",
-            //     "allDay": false,
-            //     "start": "2009-11-12T19:00:00.000Z",
-            //     "end": "2009-11-12T20:00:00.000Z",
-            //     "tags": [
-            //         "outing"
-            //     ],
-            //     "attendance": [
-            //         {
-            //             "status": "Active",
-            //             "residentId": "336465362937709139",
-            //             "author": "undefined"
-            //         }
-            //     ],
-            //     "dimension": "Intellectual",
-            //     "facilitators": [
-            //         "Rec Aide"
-            //     ],
-            //     "levelOfCare": [
-            //         "INDEPENDENT",
-            //         "ASSISTED"
-            //     ],
-            //     "hobbies": [
-            //         "Debate",
-            //         "Public Speaking"
-            //     ],
-            //     "isRepeated": false
-            // }
             'columns': [
                 { data: 'id', name: 'id', title: 'ID' },
                 { data: 'name', name: 'name', title: 'Name' },
@@ -114,14 +83,9 @@ export default class ProgramList extends Component {
                     'searchable': false,
                     'render': function (data) {
                         if (data) {
-                            const result = Object.entries(data);
-                            for (const [key, value] of result) {
-                                if (value) {
-                                    return moment(value).format('YYYY-MM-DD HH:mm:ssZ');
-                                }
-                            }
+                            return moment(data).format('YYYY-MM-DD HH:mm:ssZ');
                         }
-                        return {};
+                        return '';
                     }
                 },
                 {
@@ -137,7 +101,7 @@ export default class ProgramList extends Component {
                     'visible': true,
                     'searchable': false,
                     'render': (data, type, row, meta) => {
-                        const listItems = data.map((i) => <li>{i}</li>);
+                        const listItems = data.map((i) => <li key={i}>{i}</li>);
 
                         return ReactDOMServer.renderToStaticMarkup(
                             <div>
