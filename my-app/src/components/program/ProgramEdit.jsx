@@ -1,8 +1,19 @@
 import React, { Component, PureComponent } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 const moment = window.moment;
+
+const levelOfCareOptions = [
+    { label: "INDEPENDENT", value: "INDEPENDENT" },
+    { label: "ASSISTED", value: "ASSISTED" },
+    { label: "MEMORY", value: "MEMORY" },
+    { label: "LONGTERM", value: "LONGTERM" }
+]
+
+const animatedComponents = makeAnimated();
 
 class AttendanceEdit extends PureComponent {
     state = {
@@ -248,7 +259,7 @@ class ProgramEdit extends Component {
                             tags: response.tags ? response.tags : '',
                             dimension: response.dimension ? response.dimension : '',
                             facilitators: response.facilitators ? response.facilitators : '',
-                            levelOfCare: response.levelOfCare ? response.levelOfCare : [],
+                            levelOfCare: response.levelOfCare ? this.addObjToArr(response.levelOfCare) : [],
                             hobbies: response.hobbies ? response.hobbies : [],
                             isRepeated: response.isRepeated,
                             attendance: response.attendance
@@ -257,6 +268,19 @@ class ProgramEdit extends Component {
                 });
             }) // if text, no need for JSON.stringify
             .catch(error => console.error('Error:', error));
+    }
+
+    addObjToArr = (arr) => {
+        const result = [];
+        
+        arr.map((item) => {
+            const obj = {};
+            obj["label"] = item;
+            obj["value"] = item;
+            result.push(obj);
+        });
+        
+        return result;
     }
 
     componentDidMount() {
@@ -297,6 +321,22 @@ class ProgramEdit extends Component {
             if (typeof callback == 'function') {
                 callback();
             }
+        });
+    }
+
+    handleLevelOfCareChange = (value) => {
+        let arr = [];
+
+        value.map((item) => {
+            arr.push(item.value);
+        });
+
+        this.setState({
+            levelOfCare: arr,
+            dirty: true
+        }, () => {
+            console.log(this.state.levelOfCare);
+            console.log(this.state.dirty);
         });
     }
 
@@ -349,7 +389,6 @@ class ProgramEdit extends Component {
                                 isRepeated: response.isRepeated,
                                 attendance: response.attendance
                             });
-
                         }
                     });
                 }) // if text, no need for JSON.stringify
@@ -377,7 +416,7 @@ class ProgramEdit extends Component {
                 residents: [],
                 allResidents: allResidents,
                 allStatus: allStatus
-            })
+            });
         }
     }
 
@@ -427,7 +466,7 @@ class ProgramEdit extends Component {
         const { formValues } = this.props;
         const { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated, attendance, dirty } = this.state;
         const { residents, allResidents, allStatus } = formValues ? formValues : {};
-
+        console.log(this.state.levelOfCare);
         return (
             <div className="card" id="card-new">
                 <div className="card-body">
@@ -490,13 +529,15 @@ class ProgramEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Level Of Care</label>
-                                <select name="levelOfCare" className="form-control" id="inputLevelOfCare" value={levelOfCare} onChange={this.handleChange} required>
-                                    <option value=""></option>
-                                    <option value="INDEPENDENT">INDEPENDENT</option>
-                                    <option value="ASSISTED">ASSISTED</option>
-                                    <option value="MEMORY">MEMORY</option>
-                                    <option value="LONGTERM">LONGTERM</option>
-                                </select>
+                                <Select
+                                    name="levelOfCare"
+                                    closeMenuOnSelect={false}
+                                    components={animatedComponents}
+                                    value={this.state.levelOfCare}
+                                    isMulti
+                                    options={levelOfCareOptions}
+                                    onChange={this.handleLevelOfCareChange}
+                                />
                             </div>
 
                             <div className="form-group col-md-6">
