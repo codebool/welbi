@@ -380,7 +380,7 @@ class ResidentEdit extends Component {
         e.preventDefault();
 
         const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt } = this.state;
-        const { programs } = this.props.formValues;
+        const { programs } = this.props.formValues ? this.props.formValues : [];
         const params = { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, programs };
         
         const answer = window.confirm("Are you sure you want to save?");
@@ -416,7 +416,7 @@ class ResidentEdit extends Component {
 
     render() {
         const { formValues } = this.props;
-        const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, attendance, dirty } = this.state;
+        const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, dirty } = this.state;
         const { programs, allPrograms, allStatus } = formValues ? formValues : {};
 
         return (

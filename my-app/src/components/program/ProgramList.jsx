@@ -89,7 +89,20 @@ export default class ProgramList extends Component {
                     }
                 },
                 {
-                    'targets': [6, 8, 9, 10],
+                    'targets': [6, 8, 10],
+                    'visible': true,
+                    'searchable': false,
+                    'render': (data, type, row, meta) => {
+                        const listItems = data.map((i) => <li key={i}>{i}</li>);
+
+                        return ReactDOMServer.renderToStaticMarkup(
+                            <div>
+                                <ul>{listItems}</ul>
+                            </div>)
+                    }
+                },
+                {
+                    'targets': [9],
                     'visible': true,
                     'searchable': false,
                     'render': (data, type, row, meta) => {

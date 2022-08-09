@@ -408,7 +408,7 @@ class ProgramEdit extends Component {
     attendResidentToProgram = (residents) => {
         if (residents.length) {
             residents.map((resident) => {
-                fetch("https://welbi.org/api/programs/" + this.state.id + "/attend", {
+                return fetch("https://welbi.org/api/programs/" + this.state.id + "/attend", {
                     method: 'POST',
                     body: JSON.stringify(resident), // data can be string or object
                     headers: {
@@ -457,7 +457,9 @@ class ProgramEdit extends Component {
                             id: response.id
                         });
                         this.attendResidentToProgram(residents);
-                        this.props.history.push('/program/');
+                        // window.location.href = 'http://localhost:3001/program';
+                        // this.loadProgram(response.id);
+                        this.props.push('/program/' + this.state.id + '/edit');
                     }
                     else {
                         this.props.history.push('/program/');
