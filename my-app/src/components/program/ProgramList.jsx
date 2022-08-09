@@ -73,7 +73,7 @@ export default class ProgramList extends Component {
                 { data: 'levelOfCare', name: 'levelOfCare', title: 'Level Of Care' },
                 { data: 'hobbies', name: 'hobbies', title: 'Hobbies' },
                 { data: 'isRepeated', name: 'isRepeated', title: 'Is Repeated' },
-                { data: 'attendance', name: 'attendance', title: 'Attendance' },
+                { data: 'attendance', name: 'attendance', title: 'Attendance', visible: false },
                 { data: null, title: 'Actions' }
             ],
             'columnDefs': [
@@ -87,20 +87,26 @@ export default class ProgramList extends Component {
                         }
                         return '';
                     }
-                },   
+                },
                 {
                     'targets': [6, 8, 9, 10],
                     'visible': true,
                     'searchable': false,
                     'render': (data, type, row, meta) => {
-                        const listItems = data.map((i) => <li key={i}>{i}</li>);
+                        // Since I have input the wrong date format for lEVEL OF CARE, I need to check if it is an array
+                        if (row.id == 339535914744152659 || row.id == 339536684491211347) {
+                            return "Wrong data type";
+                        }
+                        else {
+                            const listItems = data.map((i) => <li key={i}>{i}</li>);
 
-                        return ReactDOMServer.renderToStaticMarkup(
-                            <div>
-                                <ul>{listItems}</ul>
-                            </div>)
+                            return ReactDOMServer.renderToStaticMarkup(
+                                <div>
+                                    <ul>{listItems}</ul>
+                                </div>)
+                        }
                     }
-                },     
+                },
                 {
                     'targets': [12],
                     'visible': true,

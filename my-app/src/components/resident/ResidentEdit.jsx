@@ -275,10 +275,6 @@ class ResidentEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     handleChange = (event, callback) => {
         let fieldDetails = { dirty: true };
 
@@ -376,6 +372,7 @@ class ResidentEdit extends Component {
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
         this.props.reset();
     }
 
@@ -542,7 +539,7 @@ class ResidentEdit extends Component {
                                     </button> : <button className='btn btn-danger mr-3' type='button' disabled>
                                         <i className='fas fa-undo' /> Reset
                                     </button>}
-                                    <button className='btn btn-success' type='submit' value={"Submit"}>
+                                    <button className='btn btn-success' type='submit' value={"Submit"} disabled={this.state.id}>
                                         <i className='fas fa-save' /> Save
                                     </button>
                                 </div>

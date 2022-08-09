@@ -224,16 +224,6 @@ class ProgramEdit extends Component {
         };
     }
 
-    parseObject = (obj) => {
-        const result = Object.entries(obj);
-        for (const [key, value] of result) {
-            if (value) {
-                return value;
-            }
-        }
-        return {};
-    }
-
     loadProgram = (id) => {
         const { initialize } = this.props;
         fetch("https://welbi.org/api/programs", {
@@ -297,6 +287,7 @@ class ProgramEdit extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
+        this.props.reset();
     }
 
     handleChange = (event, callback) => {
@@ -325,19 +316,8 @@ class ProgramEdit extends Component {
     }
 
     handleLevelOfCareChange = (value) => {
-        const { id, levelOfCare } = this.state;
-        let arr = [];
-        if (id && levelOfCare) {
-            arr = value;
-        }
-        else {
-            value.map((item) => {
-                arr.push(item.value);
-            });
-        }
-
         this.setState({
-            levelOfCare: arr,
+            levelOfCare: value,
             dirty: true
         }, () => {
             console.log(this.state.levelOfCare);
@@ -425,10 +405,6 @@ class ProgramEdit extends Component {
         }
     }
 
-    componentWillUnmount() {
-        this.props.reset();
-    }
-
     attendResidentToProgram = (residents) => {
         if (residents.length) {
             residents.map((resident) => {
@@ -453,7 +429,11 @@ class ProgramEdit extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated } = this.state;
+        const { id, name, location, allDay, start, end, tags, dimension, facilitators, hobbies, isRepeated } = this.state;
+        const levelOfCare = this.state.levelOfCare.map((item) => {
+            return item.value;
+        })
+
         const { residents } = this.props.formValues;
         const params = { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated, residents };
 
@@ -492,7 +472,7 @@ class ProgramEdit extends Component {
 
     render() {
         const { formValues } = this.props;
-        const { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated, attendance, dirty } = this.state;
+        const { id, name, location, allDay, start, end, tags, dimension, facilitators, levelOfCare, hobbies, isRepeated, dirty } = this.state;
         const { residents, allResidents, allStatus } = formValues ? formValues : {};
 
         return (
@@ -524,6 +504,14 @@ class ProgramEdit extends Component {
                             <div className="form-group col-md-6">
                                 <label>All Day?</label>
                                 <select name="allDay" className="form-control" id="inputAllDay" value={allDay} onChange={this.handleChange} required>
+                                    <option value="false">false</option>
+                                    <option value="true">true</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Is Repeated?</label>
+                                <select name="isRepeated" className="form-control" id="inputIsRepeated" value={isRepeated} onChange={this.handleChange} required>
                                     <option value="false">false</option>
                                     <option value="true">true</option>
                                 </select>
@@ -572,7 +560,8 @@ class ProgramEdit extends Component {
                                         name="levelOfCare"
                                         closeMenuOnSelect={false}
                                         components={animatedComponents}
-                                        defaultValue={[]}
+                                        // defaultValue={[]}
+                                        value={levelOfCare}
                                         isMulti
                                         options={levelOfCareOptions}
                                         onChange={this.handleLevelOfCareChange}
@@ -583,14 +572,6 @@ class ProgramEdit extends Component {
                             <div className="form-group col-md-6">
                                 <label>Hobbies</label>
                                 <input name="hobbies" type="text" onChange={this.handleChange} value={hobbies} className="form-control" placeholder="hobbies1, hobbies2, hobbies3" required />
-                            </div>
-
-                            <div className="form-group col-md-6">
-                                <label>Is Repeated?</label>
-                                <select name="isRepeated" className="form-control" id="inputIsRepeated" value={isRepeated} onChange={this.handleChange} required>
-                                    <option value="false">false</option>
-                                    <option value="true">true</option>
-                                </select>
                             </div>
 
                             <div className='form-group col-md-12'>
@@ -611,7 +592,7 @@ class ProgramEdit extends Component {
                                     </button> : <button className='btn btn-danger mr-3' type='button' disabled>
                                         <i className='fas fa-undo' /> Reset
                                     </button>}
-                                    <button className='btn btn-success' type='submit' value={"Submit"}>
+                                    <button className='btn btn-success' type='submit' value={"Submit"} disabled={this.state.id}>
                                         <i className='fas fa-save' /> Save
                                     </button>
                                 </div>
