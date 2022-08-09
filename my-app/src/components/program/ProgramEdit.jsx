@@ -389,7 +389,7 @@ class ProgramEdit extends Component {
                                 tags: response.tags ? response.tags : '',
                                 dimension: response.dimension ? response.dimension : '',
                                 facilitators: response.facilitators ? response.facilitators : '',
-                                levelOfCare: response.levelOfCare ? response.levelOfCare : [],
+                                levelOfCare: response.levelOfCare ? this.addObjToArr(response.levelOfCare) : [],
                                 hobbies: response.hobbies ? response.hobbies : [],
                                 isRepeated: response.isRepeated,
                                 attendance: response.attendance
@@ -429,7 +429,7 @@ class ProgramEdit extends Component {
         this.props.reset();
     }
 
-    attendResidentToProgram = (programId, residents) => {
+    attendResidentToProgram = (residents) => {
         if (residents.length) {
             residents.map((resident) => {
                 fetch("https://welbi.org/api/programs/" + this.state.id + "/attend", {
@@ -476,7 +476,7 @@ class ProgramEdit extends Component {
                         this.setState({
                             id: response.id
                         });
-                        this.attendResidentToProgram(id, residents);
+                        this.attendResidentToProgram(residents);
                         this.props.history.push('/program/');
                     }
                     else {
