@@ -405,10 +405,10 @@ class ProgramEdit extends Component {
         }
     }
 
-    attendResidentToProgram = (residents) => {
+    attendResidentToProgram = (residents, programId) => {
         if (residents.length) {
             residents.map((resident) => {
-                return fetch("https://welbi.org/api/programs/" + this.state.id + "/attend", {
+                fetch("https://welbi.org/api/programs/" + programId + "/attend", {
                     method: 'POST',
                     body: JSON.stringify(resident), // data can be string or object
                     headers: {
@@ -456,14 +456,9 @@ class ProgramEdit extends Component {
                         this.setState({
                             id: response.id
                         });
-                        this.attendResidentToProgram(residents);
-                        // window.location.href = 'http://localhost:3001/program';
-                        // this.loadProgram(response.id);
-                        this.props.push('/program/' + this.state.id + '/edit');
+                        this.attendResidentToProgram(residents, response.id);
                     }
-                    else {
-                        this.props.history.push('/program/');
-                    }
+                    this.props.history.push('/program/');
                 }) // if text, no need for JSON.stringify
                 .catch(error => console.error('Error:', error));
         } else {
@@ -530,13 +525,13 @@ class ProgramEdit extends Component {
                             </div>
 
                             <div className="form-group col-md-6">
-                                <label>Tags</label>
-                                <input name="tags" type="text" onChange={this.handleChange} value={tags} className="form-control" placeholder="tag1,tag2,tag3" required />
+                                <label>Dimension</label>
+                                <input name="dimension" type="text" onChange={this.handleChange} value={dimension} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
-                                <label>Dimension</label>
-                                <input name="dimension" type="text" onChange={this.handleChange} value={dimension} className="form-control" required />
+                                <label>Tags</label>
+                                <input name="tags" type="text" onChange={this.handleChange} value={tags} className="form-control" placeholder="tag1,tag2,tag3" required />
                             </div>
 
                             <div className="form-group col-md-6">
@@ -544,36 +539,22 @@ class ProgramEdit extends Component {
                                 <input name="facilitators" type="text" onChange={this.handleChange} value={facilitators} className="form-control" placeholder="facilitator1,facilitator2,facilitator3" required />
                             </div>
 
-                            <div className="form-group col-md-6">
-                                <label>Level Of Care</label>
-
-                                {(id) ?
-                                    <Select
-                                        name="levelOfCare"
-                                        closeMenuOnSelect={false}
-                                        components={animatedComponents}
-                                        value={levelOfCare}
-                                        isMulti
-                                        options={levelOfCareOptions}
-                                        onChange={this.handleLevelOfCareChange}
-                                    />
-                                    :
-                                    <Select
-                                        name="levelOfCare"
-                                        closeMenuOnSelect={false}
-                                        components={animatedComponents}
-                                        // defaultValue={[]}
-                                        value={levelOfCare}
-                                        isMulti
-                                        options={levelOfCareOptions}
-                                        onChange={this.handleLevelOfCareChange}
-                                    />
-                                }
+                             <div className="form-group col-md-6">
+                                <label>Hobbies</label>
+                                <input name="hobbies" type="text" onChange={this.handleChange} value={hobbies} className="form-control" placeholder="hobbies1, hobbies2, hobbies3" required />
                             </div>
 
                             <div className="form-group col-md-6">
-                                <label>Hobbies</label>
-                                <input name="hobbies" type="text" onChange={this.handleChange} value={hobbies} className="form-control" placeholder="hobbies1, hobbies2, hobbies3" required />
+                                <label>Level Of Care</label>
+                                <Select
+                                        name="levelOfCare"
+                                        closeMenuOnSelect={false}
+                                        components={animatedComponents}
+                                        value={levelOfCare}
+                                        isMulti
+                                        options={levelOfCareOptions}
+                                        onChange={this.handleLevelOfCareChange}
+                                    />
                             </div>
 
                             <div className='form-group col-md-12'>

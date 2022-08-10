@@ -382,7 +382,7 @@ class ResidentEdit extends Component {
         const { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt } = this.state;
         const { programs } = this.props.formValues ? this.props.formValues : [];
         const params = { id, name, firstName, lastName, preferredName, status, room, levelOfCare, ambulation, author, birthDate, moveInDate, createdAt, updatedAt, programs };
-        
+
         const answer = window.confirm("Are you sure you want to save?");
         if (answer) {
             fetch("https://welbi.org/api/residents", {
@@ -398,14 +398,11 @@ class ResidentEdit extends Component {
                         dirty: false
                     });
                     if (response.id) {
-                        this.props.history.push('/resident/' + response.id + '/edit');
                         this.setState({
                             id: response.id
                         });
                     }
-                    else {
-                        this.props.history.push('/resident/');
-                    }
+                    this.props.history.push('/resident/');
                 }) // if text, no need for JSON.stringify
                 .catch(error => console.error('Error:', error));
         } else {
@@ -437,17 +434,17 @@ class ResidentEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Name</label>
-                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" required/>
+                                <input name="name" type="text" onChange={this.handleChange} value={name} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>First Name</label>
-                                <input name="firstName" type="text" onChange={this.handleChange} value={firstName} className="form-control" required/>
+                                <input name="firstName" type="text" onChange={this.handleChange} value={firstName} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Last Name</label>
-                                <input name="lastName" type="text" onChange={this.handleChange} value={lastName} className="form-control" required/>
+                                <input name="lastName" type="text" onChange={this.handleChange} value={lastName} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
@@ -467,9 +464,9 @@ class ResidentEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Room</label>
-                                <input name="room" type="text" onChange={this.handleChange} value={room} className="form-control" required/>
+                                <input name="room" type="text" onChange={this.handleChange} value={room} className="form-control" required />
                             </div>
-                           
+
                             <div className="form-group col-md-6">
                                 <label>Level Of Care</label>
                                 <select name="levelOfCare" className="form-control" id="inputLevelOfCare" value={levelOfCare} onChange={this.handleChange} required>
@@ -480,7 +477,7 @@ class ResidentEdit extends Component {
                                     <option value="LONGTERM">LONGTERM</option>
                                 </select>
                             </div>
-                            
+
                             <div className="form-group col-md-6">
                                 <label>Ambulation</label>
                                 <select name="ambulation" className="form-control" id="inputAmbulation" value={ambulation} onChange={this.handleChange} required>
@@ -499,12 +496,12 @@ class ResidentEdit extends Component {
 
                             <div className="form-group col-md-6">
                                 <label>Birth Date</label>
-                                <input name="birthDate" type="datetime-local" onChange={this.handleChange} value={moment(birthDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required/>
+                                <input name="birthDate" type="datetime-local" onChange={this.handleChange} value={moment(birthDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required />
                             </div>
 
                             <div className="form-group col-md-6">
                                 <label>Move In Date</label>
-                                <input name="moveInDate" type="datetime-local" onChange={this.handleChange} value={moment(moveInDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required/>
+                                <input name="moveInDate" type="datetime-local" onChange={this.handleChange} value={moment(moveInDate).format('YYYY-MM-DDTkk:mm')} className="form-control" required />
                             </div>
 
                             {(id) ?
