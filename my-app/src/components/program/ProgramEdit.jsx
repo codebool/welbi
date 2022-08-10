@@ -452,11 +452,11 @@ class ProgramEdit extends Component {
                     this.setState({
                         dirty: false
                     });
+                    this.attendResidentToProgram(residents, response.id);
                     if (response.id) {
                         this.setState({
                             id: response.id
                         });
-                        this.attendResidentToProgram(residents, response.id);
                     }
                     this.props.history.push('/program/');
                 }) // if text, no need for JSON.stringify
