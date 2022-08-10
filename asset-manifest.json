@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/welbi/static/css/main.6c940fbc.css",
-    "main.js": "/welbi/static/js/main.7382d1bd.js",
-    "index.html": "/welbi/index.html",
-    "main.6c940fbc.css.map": "/welbi/static/css/main.6c940fbc.css.map",
-    "main.7382d1bd.js.map": "/welbi/static/js/main.7382d1bd.js.map"
+    "main.css": "./static/css/main.6c940fbc.css",
+    "main.js": "./static/js/main.7382d1bd.js",
+    "index.html": "./index.html",
+    "main.6c940fbc.css.map": "./static/css/main.6c940fbc.css.map",
+    "main.7382d1bd.js.map": "./static/js/main.7382d1bd.js.map"
   },
   "entrypoints": [
     "static/css/main.6c940fbc.css",
