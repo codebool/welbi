@@ -101,25 +101,25 @@ export default class ProgramList extends Component {
                             </div>)
                     }
                 },
-                // {
-                //     'targets': [9],
-                //     'visible': true,
-                //     'searchable': false,
-                //     'render': (data, type, row, meta) => {
-                //         // Since I have input the wrong date format for lEVEL OF CARE, I need to check if it is an array
-                //         if (row.id == 339535914744152659 || row.id == 339536684491211347) {
-                //             return "Wrong data type";
-                //         }
-                //         else {
-                //             const listItems = data.map((i) => <li key={i}>{i}</li>);
+                {
+                    'targets': [9],
+                    'visible': true,
+                    'searchable': false,
+                    'render': (data, type, row, meta) => {
+                        // Since I have input the wrong date format for lEVEL OF CARE, I need to check if it is an array
+                        if (row.id == 339535914744152659 || row.id == 339536684491211347) {
+                            return "Wrong data type";
+                        }
+                        else {
+                            const listItems = data.map((i) => <li key={i}>{i}</li>);
 
-                //             return ReactDOMServer.renderToStaticMarkup(
-                //                 <div>
-                //                     <ul>{listItems}</ul>
-                //                 </div>)
-                //         }
-                //     }
-                // },
+                            return ReactDOMServer.renderToStaticMarkup(
+                                <div>
+                                    <ul>{listItems}</ul>
+                                </div>)
+                        }
+                    }
+                },
                 {
                     'targets': [12],
                     'visible': true,
